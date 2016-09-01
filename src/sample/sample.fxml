@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <top>
       <MenuBar id="MenuBar" BorderPane.alignment="CENTER">
         <menus>
@@ -27,7 +27,7 @@
             <items>
                   <MenuItem fx:id="loadGameMenuItem" mnemonicParsing="false" onAction="#loadGameOnClick" text="Load new game" />
                   <MenuItem fx:id="startGameMenuItem" disable="true" mnemonicParsing="false" onAction="#startGameOnClick" text="Start Game" />
-              <MenuItem fx:id="closeMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame" />
+              <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame" />
             </items>
           </Menu>
           <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
