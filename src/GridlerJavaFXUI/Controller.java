@@ -1,5 +1,6 @@
-package sample;
+package GridlerJavaFXUI;
 
+import Logic.Square;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -42,9 +43,19 @@ public class Controller {
     private Button makeMoveButton;
     @FXML
     private Button endTurnButton;
+
     @FXML
     public void endTurnOnClick() {
+        Square.eSquareSign sign = Square.eSquareSign.UNDEFINED;
 
+        if(blackRadioButton.isSelected()){
+            sign = Square.eSquareSign.BLACKED;
+        }
+        else if(clearedRadioButton.isSelected()){
+            sign = Square.eSquareSign.CLEARED
+        }
+
+        playerMoveHandler.Invoke(playersNameLabel.getText(), sign, commentTextField.getText());
     }
 
     @FXML
