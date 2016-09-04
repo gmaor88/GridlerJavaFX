@@ -3,7 +3,7 @@ package sample;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-public class Controller {
+public class sampleController {
     @FXML
     private MenuItem loadGameMenuItem;
     @FXML
