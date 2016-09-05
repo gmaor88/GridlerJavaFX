@@ -21,7 +21,7 @@ public class GameLoader {
         GameBoard board;
 
         //get basic data from xml and look for exceptions
-        if(!i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer")){
+        if(!i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer") && !i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayers")){
             throw new GameLoadException("Invalid Format");
         }
 
@@ -76,23 +76,38 @@ public class GameLoader {
         return board;
     }
 
-    public GamePlayer loadPlayer(GameDescriptor i_GameDescriptor){
-        GamePlayer player;
+    public ArrayList<GamePlayer> loadPlayer(GameDescriptor i_GameDescriptor) throws GameLoadException{
+        ArrayList<GamePlayer> players = new ArrayList<>();
         String playerId,playerName;
-        Integer maxNumberOfMoves;
+        Integer maxNumberOfMoves, numberOfPlayers;
         boolean humanPlayer;
         //gives you the basic option to load player data from xml file
 
-        playerId = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(0).getId().toString();
-        playerName = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(0).getName();
-        humanPlayer = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(0).getPlayerType().equalsIgnoreCase("Human");
-        player = new GamePlayer(humanPlayer, playerName, playerId);
-        if(!humanPlayer && Tools.tryParseInt(i_GameDescriptor.getMultiPlayers().getMoves())){
-            maxNumberOfMoves = Integer.parseInt(i_GameDescriptor.getMultiPlayers().getMoves());
-            player.setMoveLimit(maxNumberOfMoves);
+
+        numberOfPlayers = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().size();
+        if(numberOfPlayers < 1){
+            throw new GameLoadException("Invalid number of players");
         }
 
-        return  player;
+        for(int i = 0; i < numberOfPlayers; i++) {
+            playerId = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getId().toString();
+            playerName = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getName();
+            humanPlayer = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getPlayerType().equalsIgnoreCase("Human");
+            players.add(new GamePlayer(humanPlayer, playerName, playerId));
+        }
+
+
+        if (!Tools.tryParseInt(i_GameDescriptor.getMultiPlayers().getMoves())) {
+            throw new GameLoadException("Invalid move limit");
+        }
+
+        maxNumberOfMoves = Integer.parseInt(i_GameDescriptor.getMultiPlayers().getMoves());
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players.get(i).setMoveLimit(maxNumberOfMoves);
+        }
+
+
+        return  players;
     }
 
     private int getNumberOfBlackSquare(int[] blocks) {

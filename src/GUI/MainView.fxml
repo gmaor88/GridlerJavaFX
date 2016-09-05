@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -27,18 +28,30 @@
                     <items>
                         <MenuItem fx:id="loadGameMenuItem" mnemonicParsing="false" onAction="#loadGameOnClick" text="Load new game" />
                         <MenuItem fx:id="startGameMenuItem" disable="true" mnemonicParsing="false" onAction="#startGameOnClick" text="Start Game" />
-                        <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame" />
+                        <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="ANY" />
+                     </accelerator></MenuItem>
                     </items>
                 </Menu>
                 <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem fx:id="UndoMenuItem" disable="true" mnemonicParsing="false" onAction="#undoMoveOnClick" text="Undo move (Ctrl + Z)" />
-                        <MenuItem fx:id="RedoMenuItem" disable="true" mnemonicParsing="false" onAction="#redoMoveOnClick" text="Redo move (Ctrl + Y)" />
+                        <MenuItem fx:id="UndoMenuItem" disable="true" mnemonicParsing="false" onAction="#undoMoveOnClick" text="Undo move">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                        <MenuItem fx:id="RedoMenuItem" disable="true" mnemonicParsing="false" onAction="#redoMoveOnClick" text="Redo move">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                     </items>
                 </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" onAction="#instructionOnClick" text="Instruction" />
+                        <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" onAction="#instructionOnClick" text="Instruction">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F1" control="UP" meta="UP" shift="UP" shortcut="ANY" />
+                     </accelerator></MenuItem>
                         <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#aboutOnClick" text="About" />
                     </items>
                 </Menu>
