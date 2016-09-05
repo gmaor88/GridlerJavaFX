@@ -32,6 +32,26 @@ public class GameBoard {
         initializeBoard();
     }
 
+   /* public GameBoard(GameBoard i_GameBoard) throws GameLoadException{
+        this.GameBoard(i_GameBoard.getBoardHeight(), i_GameBoard.getBoardWidth());
+    }*/
+   public GameBoard(GameBoard i_GameBoard){
+       f_BoardHeight = i_GameBoard.getBoardHeight();
+       f_BoardWidth = i_GameBoard.getBoardWidth();
+       m_VerticalSlices = new ArrayList<>();
+       initializeSlicesArray(m_VerticalSlices, f_BoardWidth);
+       m_HorizontalSlices = new ArrayList<>();
+       initializeSlicesArray(m_HorizontalSlices, f_BoardHeight);
+       m_board = new Square[f_BoardHeight][f_BoardWidth];
+       initializeBoard();
+       copyGameBoardData(i_GameBoard);
+   }
+
+    private void copyGameBoardData(GameBoard i_GameBoard) {
+        copyVerticalSlices(i_GameBoard);
+
+    }
+
     private void initializeBoard() {
         for (int j = 0; j < f_BoardHeight; j++) {
             for (int i = 0; i < f_BoardWidth; i++) {

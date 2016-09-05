@@ -85,6 +85,10 @@ public class GameLoader {
 
 
         numberOfPlayers = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().size();
+        if(numberOfPlayers < 1){
+            throw new GameLoadException("Invalid number of players");
+        }
+
         for(int i = 0; i < numberOfPlayers; i++) {
             playerId = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getId().toString();
             playerName = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getName();

@@ -10,6 +10,7 @@ public class GamePlayer {
     private final String f_Name;
     private  final String f_Id;
     private final Boolean f_IsHuman;
+    private GameBoard m_GameBoard;
     private Integer m_MovesLimit = 0;
     private LinkedList<String> m_MoveList = new LinkedList();
     private Integer m_NumOfMovesMade = 0;
@@ -20,6 +21,10 @@ public class GamePlayer {
         f_IsHuman = i_isHuman;
         f_Name = i_Name;
         f_Id = i_Id;
+    }
+
+    public void setGameBoarrd(GameBoard i_GameBoard){
+        m_GameBoard = new GameBoard(i_GameBoard);
     }
 
     public  String getId(){return  f_Id;}
