@@ -4,9 +4,7 @@ package GUI;
  * Created by dan on 9/5/2016.
  */
 
-        import Logic.Block;
-        import Logic.GameBoard;
-        import Logic.GamePlayer;
+        import Logic.*;
         import Utils.GameLoadException;
         import Utils.GameLoader;
         import Utils.JaxBGridlerClassGenerator;
@@ -17,6 +15,7 @@ package GUI;
         import javafx.scene.layout.GridPane;
         import javafx.stage.FileChooser;
         import javafx.stage.Stage;
+        import javafx.util.Pair;
         import jaxb.GameDescriptor;
 
         import javax.xml.bind.JAXBException;
@@ -24,6 +23,8 @@ package GUI;
         import java.io.FileNotFoundException;
         import java.net.URL;
         import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.Map;
         import java.util.ResourceBundle;
 
 public class MainViewController implements Initializable{
@@ -32,6 +33,8 @@ public class MainViewController implements Initializable{
     private GameBoard m_LoadedBoard;
     private GamePlayer m_CurrentPlayer;
     private int m_CurrentPlayerIndex;
+    private HashMap<Pair<Integer,Integer>,Button> m_ButtonsSelected = new HashMap();
+    private MoveSet m_CurrentMove;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -98,13 +101,14 @@ public class MainViewController implements Initializable{
         startGameMenuItem.setDisable(true);
         File file = fileChooser.showOpenDialog(m_Stage);
 
-        try {
+        try {//// TODO: 9/6/2016 use task bar and threds
             GameDescriptor gameDescriptor = JaxBGridlerClassGenerator.FromXmlFileToObject(file.getAbsolutePath());
             m_LoadedBoard = gameLoader.loadBoard(gameDescriptor);
             m_Players = gameLoader.loadPlayer(gameDescriptor);
             startGameMenuItem.setDisable(false);
             m_CurrentPlayerIndex = 0;
             m_CurrentPlayer = null;
+            buildBoard();
         } catch (JAXBException e) {//need to change!
             System.out.println("Illegal file.");
         } catch (GameLoadException ex) {
@@ -115,7 +119,19 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void makeMoveOnClick() {
+        Square.eSquareSign sign = Square.eSquareSign.UNDEFINED;
 
+        if(blackRadioButton.isSelected()){
+            sign = Square.eSquareSign.BLACKED;
+        }
+        else if(clearedRadioButton.isSelected()){
+            sign = Square.eSquareSign.CLEARED;
+        }
+
+        for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
+            m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
+            setBoardButtonStyle(entry.getValue(), sign);
+        }
     }
 
     @FXML
@@ -127,18 +143,21 @@ public class MainViewController implements Initializable{
     private void buildBoard() {
        // BoardGridPane = new GridPane();
         int j;
-        Button bSquare;
+        //Button bSquare;
 
         BoardGridPane.setAlignment(Pos.CENTER);
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             for (j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
-                bSquare = new Button();
+                final int column = j;
+                final int row = i;
+                final Button bSquare = new Button();
+                bSquare.setDisable(true);
                 bSquare.setMinWidth(25);
                 bSquare.setMinHeight(25);
-                bSquare.setOnAction(()->todo);
+                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                 bSquare.setAlignment(Pos.CENTER);
-                bSquare.setId();//to use css
-                bSquare.getStyleClass();//same
+               // bSquare.setId();//to use css
+               // bSquare.getStyleClass();//same
                 BoardGridPane.add(bSquare, j, i);
             }
 
@@ -157,11 +176,24 @@ public class MainViewController implements Initializable{
         }
     }
 
+    private void buttonClicked(int i_ColumnIndex, int i_RowIndex, Button i_Button){
+        Pair<Integer,Integer> pair = new Pair<>(i_ColumnIndex,i_RowIndex);
+
+         if(!m_ButtonsSelected.containsKey(pair)){
+             m_ButtonsSelected.put(pair,i_Button);
+             //i_Button.getStyleClass().add();//// TODO: 9/6/2016 selected
+         }
+         else {
+             m_ButtonsSelected.remove(pair);
+            // i_Button.getStyleClass().remove();// // TODO: 9/6/2016 unselected
+         }
+    }
+
     private void addBlockLabel(GridPane i_GridPane, int i_ColumnIndex, int i_RowIndex, String i_blockSize) {
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
-        lBlock.setId();//// TODO: 9/6/2016
-        lBlock.getStyleClass();//// TODO: 9/6/2016
+       // lBlock.setId();//// TODO: 9/6/2016
+        //lBlock.getStyleClass();//// TODO: 9/6/2016
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
     }
 
@@ -172,12 +204,12 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void undoMoveOnClick() {
-
+        //m_CurrentPlayer.Undo();
     }
 
     @FXML
     public void redoMoveOnClick() {
-
+        //m_CurrentPlayer.redo();
     }
 
     @FXML
