@@ -91,11 +91,15 @@ public class GameLoader {
 
         for(int i = 0; i < numberOfPlayers; i++) {
             playerId = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getId().toString();
+            for (GamePlayer player : players){
+                if(playerId.equalsIgnoreCase(player.getId())){
+                    throw new GameLoadException("2 different players with the same ID.");
+                }
+            }
             playerName = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getName();
             humanPlayer = i_GameDescriptor.getMultiPlayers().getPlayers().getPlayer().get(i).getPlayerType().equalsIgnoreCase("Human");
             players.add(new GamePlayer(humanPlayer, playerName, playerId));
         }
-
 
         if (!Tools.tryParseInt(i_GameDescriptor.getMultiPlayers().getMoves())) {
             throw new GameLoadException("Invalid move limit");

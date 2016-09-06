@@ -7,8 +7,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -46,6 +44,11 @@
                      </accelerator></MenuItem>
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="View">
+              <items>
+                <MenuItem disable="true" mnemonicParsing="false" text="Show Statistics" />
+              </items>
+            </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem fx:id="instructionMenuItem" mnemonicParsing="false" onAction="#instructionOnClick" text="Instruction">
@@ -203,11 +206,14 @@
             </children>
         </GridPane>
     </left>
-    <center>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false" BorderPane.alignment="CENTER">
-            <tabs>
-                <Tab fx:id="player1Tab" closable="false" text="Untitled Tab 1" />
-            </tabs>
-        </TabPane>
-    </center>
+   <center>
+      <GridPane fx:id="BoardGridPane" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </center>
 </BorderPane>
