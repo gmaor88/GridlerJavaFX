@@ -46,7 +46,7 @@
                 </Menu>
             <Menu mnemonicParsing="false" text="View">
               <items>
-                <MenuItem disable="true" mnemonicParsing="false" text="Show Statistics" />
+                <MenuItem fx:id="showStatisticsMenuItem" disable="true" mnemonicParsing="false" onAction="#showStatisticsOnClick" text="Show Statistics" />
               </items>
             </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">

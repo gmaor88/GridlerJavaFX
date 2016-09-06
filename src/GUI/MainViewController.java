@@ -82,6 +82,8 @@ public class MainViewController implements Initializable{
     private Button endTurnButton;
     @FXML
     private GridPane BoardGridPane;
+    @FXML
+    private MenuItem showStatisticsMenuItem;
 
     @FXML
     public void endTurnOnClick() {
@@ -185,6 +187,11 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void aboutOnClick() {
+
+    }
+
+    @FXML
+    public void showStatisticsOnClick(){
 
     }
 

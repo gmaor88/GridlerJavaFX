@@ -2,8 +2,8 @@ package UI;
 
 import Logic.*;
 import Utils.*;
-import javafx.scene.paint.Color;
 import jaxb.GameDescriptor;
+
 import javax.xml.bind.JAXBException;
 import java.util.LinkedList;
 import java.util.Random;
@@ -127,7 +127,7 @@ public class GameManager {
 
         if(userChoice.equalsIgnoreCase("y")){
             GameLoader gameLoader = new GameLoader();
-            m_Player = gameLoader.loadPlayer(i_GameDescriptor);
+            //m_Player = gameLoader.loadPlayer(i_GameDescriptor);
         }
         else{
             getPlayerDataFromUser();
