@@ -10,7 +10,7 @@ import Utils.GameLoadException;
  */
 public class GameBoard {
 
-    private Square[][] m_board;
+    private Square[][] m_Board;
     private final int f_BoardHeight;
     private final int f_BoardWidth;
     private ArrayList<ArrayList<Block>> m_VerticalSlices;
@@ -28,7 +28,7 @@ public class GameBoard {
         initializeSlicesArray(m_VerticalSlices, i_BoardWidth);
         m_HorizontalSlices = new ArrayList<>();
         initializeSlicesArray(m_HorizontalSlices, i_BoardHeight);
-        m_board = new Square[f_BoardHeight][f_BoardWidth];
+        m_Board = new Square[f_BoardHeight][f_BoardWidth];
         initializeBoard();
     }
 
@@ -42,23 +42,48 @@ public class GameBoard {
        initializeSlicesArray(m_VerticalSlices, f_BoardWidth);
        m_HorizontalSlices = new ArrayList<>();
        initializeSlicesArray(m_HorizontalSlices, f_BoardHeight);
-       m_board = new Square[f_BoardHeight][f_BoardWidth];
+       m_Board = new Square[f_BoardHeight][f_BoardWidth];
        initializeBoard();
        copyGameBoardData(i_GameBoard);
    }
 
     private void copyGameBoardData(GameBoard i_GameBoard) {
-        copyVerticalSlices(i_GameBoard);
+        copySlices(m_VerticalSlices, i_GameBoard.m_HorizontalSlices);
+        copySlices(m_HorizontalSlices, i_GameBoard.m_VerticalSlices);
+        copyBoard(i_GameBoard.m_Board);
+    }
 
+    private void copyBoard(Square[][] i_Board) {
+        for(int i = 0; i < f_BoardHeight; i++){
+            for (int j = 0; j < f_BoardWidth; j++){
+                m_Board[i][j].setTrueSquareSignValue(i_Board[i][j].getTrueSquareSignValue());
+            }
+        }
+    }
+
+    private void copySlices(ArrayList<ArrayList<Block>> i_DestintionSlices, ArrayList<ArrayList<Block>> i_SourceSlices) {
+        for(int i = 0; i < i_SourceSlices.size(); i++){
+            for (int j = 0; j < i_SourceSlices.get(i).size(); j++){
+                i_DestintionSlices.get(i).add(new Block(i_SourceSlices.get(i).get(j).getSize()));
+            }
+        }
     }
 
     private void initializeBoard() {
         for (int j = 0; j < f_BoardHeight; j++) {
             for (int i = 0; i < f_BoardWidth; i++) {
-                m_board[j][i] = new Square();
+                m_Board[j][i] = new Square();
             }
         }
     }
+
+//    public ArrayList getVerticalSlices(){
+//        return m_VerticalSlices;
+//    }
+//
+//    public ArrayList getHorizontalSlices(){
+//        return m_HorizontalSlices;
+//    }
 
     private void initializeSlicesArray(ArrayList<ArrayList<Block>> i_Slices, int i_Size) {
         for(int i = 0; i < i_Size; i++){
@@ -115,7 +140,7 @@ public class GameBoard {
             throw new ArrayIndexOutOfBoundsException ("Width Out of Bounds");
         }
 
-        return  m_board[i_Height - 1][i_Width - 1];
+        return  m_Board[i_Height - 1][i_Width - 1];
     }
 
     public MoveSet insert(int i_StartRow, int i_StartColumn, int i_EndRow, int i_EndColumn, Square.eSquareSign i_Sign, String i_Comment) throws  ArrayIndexOutOfBoundsException{
@@ -130,8 +155,8 @@ public class GameBoard {
 
         for(int i = i_StartRow - 1; i < i_EndRow; i++){
             for(int j = i_StartColumn - 1; j < i_EndColumn; j++){
-                moveset.AddNewPoint(i + 1, j + 1, m_board[i][j].getCurrentSquareSign());// was without +1
-                m_board[i][j].setCurrentSquareSign(i_Sign);
+                moveset.AddNewPoint(i + 1, j + 1, m_Board[i][j].getCurrentSquareSign());// was without +1
+                m_Board[i][j].setCurrentSquareSign(i_Sign);
             }
         }
 
@@ -170,7 +195,7 @@ public class GameBoard {
         for(int i = 0; i < i_AmountToScan; i++){
             for(int j = 0; j < i_LengthOfScan; j++){
                 if(i_HorizontalScan) {
-                    if (m_board[i][j].getCurrentSquareSign() == Square.eSquareSign.BLACKED) {
+                    if (m_Board[i][j].getCurrentSquareSign() == Square.eSquareSign.BLACKED) {
                         blockSizeCounter++;
                     } else if (blockSizeCounter != 0) {
                         flagHorizontalBlock(i, blockSizeCounter);
@@ -178,7 +203,7 @@ public class GameBoard {
                     }
                 }
                 else{
-                    if (m_board[j][i].getCurrentSquareSign() == Square.eSquareSign.BLACKED) {
+                    if (m_Board[j][i].getCurrentSquareSign() == Square.eSquareSign.BLACKED) {
                         blockSizeCounter++;
                     } else if (blockSizeCounter != 0) {
                         flagVerticalBlock(i, blockSizeCounter);
@@ -241,7 +266,7 @@ public class GameBoard {
 
         for (int i = 0; i < f_BoardHeight; i++) {
             for (int j = 0; j < f_BoardWidth; j++) {
-                if (m_board[i][j].CheckIfCellMarkedCorrectly()) {
+                if (m_Board[i][j].CheckIfCellMarkedCorrectly()) {
                     completionPercentage++;
                 }
             }
