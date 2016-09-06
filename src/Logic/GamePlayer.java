@@ -78,6 +78,7 @@ public class GamePlayer {
     public void incrementNumOfUndos(){
         m_NumOfMovesMade--;
         m_NumOfUndoMade++;
+        m_MoveList.removeFirst();
     }
 
     public void incrementNumOfRedos(){
