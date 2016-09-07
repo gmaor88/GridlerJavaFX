@@ -4,28 +4,24 @@ package GUI;
  * Created by dan on 9/5/2016.
  */
 
-        import Logic.*;
-        import Utils.GameLoadException;
-        import Utils.GameLoader;
-        import Utils.JaxBGridlerClassGenerator;
-        import javafx.fxml.FXML;
-        import javafx.fxml.Initializable;
-        import javafx.geometry.Pos;
-        import javafx.scene.control.*;
-        import javafx.scene.layout.GridPane;
-        import javafx.stage.FileChooser;
-        import javafx.stage.Stage;
-        import javafx.util.Pair;
-        import jaxb.GameDescriptor;
+import Logic.*;
+import Utils.GameLoadException;
+import Utils.GameLoader;
+import Utils.JaxBGridlerClassGenerator;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+import jaxb.GameDescriptor;
 
-        import javax.xml.bind.JAXBException;
-        import java.io.File;
-        import java.io.FileNotFoundException;
-        import java.net.URL;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.Map;
-        import java.util.ResourceBundle;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 public class MainViewController implements Initializable{
     private Stage m_Stage;
@@ -110,9 +106,9 @@ public class MainViewController implements Initializable{
             m_CurrentPlayer = null;
             buildBoard();
         } catch (JAXBException e) {//need to change!
-            System.out.println("Illegal file.");
+            showErrorMsg("FIle loading error", "Illegal file");
         } catch (GameLoadException ex) {
-            System.out.println(ex.getMessage());
+            showErrorMsg("FIle loading error", ex.getMessage());
         }
         //todo show preview board and list of players
     }
@@ -134,6 +130,10 @@ public class MainViewController implements Initializable{
         }
     }
 
+    private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
+
+    }
+
     @FXML
     public void startGameOnClick() {
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
@@ -145,7 +145,7 @@ public class MainViewController implements Initializable{
         int j;
         //Button bSquare;
 
-        BoardGridPane.setAlignment(Pos.CENTER);
+        BoardGridPane.setAlignment(Pos.TOP_LEFT);
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             for (j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
                 final int column = j;
@@ -199,7 +199,16 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void endGameOnClick() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit confirmation");
+        alert.setContentText("Are you sure you want to quit?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // Quit game - end player's game
+        } else {
+            // do nothing...
+        }
     }
 
     @FXML
@@ -214,12 +223,20 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void instructionOnClick() {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Instructions");
+        alert.setHeaderText("Gridler 2.0");
+        alert.setContentText("Please Read the ReadMe file :)");
+        alert.showAndWait();
     }
 
     @FXML
     public void aboutOnClick() {
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About Gridler JavaFX");
+        alert.setHeaderText("Gridler 2.0");
+        alert.setContentText("Have Fun!");
+        alert.showAndWait();
     }
 
     @FXML
@@ -227,79 +244,11 @@ public class MainViewController implements Initializable{
 
     }
 
-    public Button getEndTurnButton() {
-        return endTurnButton;
-    }
-
-    public MenuItem getEndGameMenuItem() {
-        return endGameMenuItem;
-    }
-
-    public MenuItem getLoadGameMenuItem() {
-        return loadGameMenuItem;
-    }
-
-    public Label getIDLabel() {
-        return IDLabel;
-    }
-
-    public Label getMovesLeftInTurnLabel() {
-        return movesLeftInTurnLabel;
-    }
-
-    public Button getMakeMoveButton() {
-        return makeMoveButton;
-    }
-
-    public Label getPlayersNameLabel() {
-        return playersNameLabel;
-    }
-
-    public Label getScoreLabel() {
-        return scoreLabel;
-    }
-
-    public Label getTurnsLeftInGameLabel() {
-        return turnsLeftInGameLabel;
-    }
-
-    public MenuItem getRedoMenuItem() {
-        return RedoMenuItem;
-    }
-
-    public Label getTimerLabel() {
-        return timerLabel;
-    }
-
-    public MenuItem getStartGameMenuItem() {
-        return startGameMenuItem;
-    }
-
-    public MenuItem getUndoMenuItem() {
-        return UndoMenuItem;
-    }
-
-    public RadioButton getBlackRadioButton() {
-        return blackRadioButton;
-    }
-
-    public RadioButton getClearedRadioButton() {
-        return clearedRadioButton;
-    }
-
-    public RadioButton getUndefinedRadioButton() {
-        return undefinedRadioButton;
-    }
-
-    public TextField getCommentTextField() {
-        return commentTextField;
-    }
-
-    public MenuItem getAboutMenuItem() {
-        return aboutMenuItem;
-    }
-
-    public MenuItem getInstructionMenuItem() {
-        return instructionMenuItem;
+    private void showErrorMsg(String i_MsgHeather, String i_ErrorMsg){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(i_MsgHeather);
+        alert.setHeaderText("ERROR!");
+        alert.setContentText(i_ErrorMsg);
+        alert.showAndWait();
     }
 }
