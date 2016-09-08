@@ -156,8 +156,8 @@ public class MainViewController implements Initializable{
                 bSquare.setMinHeight(25);
                 bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                 bSquare.setAlignment(Pos.CENTER);
-               // bSquare.setId();//to use css
-               // bSquare.getStyleClass();//same
+                bSquare.setId("undefCell");
+                //bSquare.getStyleClass();//same
                 BoardGridPane.add(bSquare, j, i);
             }
 

@@ -1,0 +1,21 @@
+.buttonClicked {
+    -fx-border-color: #3da812;
+    -fx-border-width: 3;
+}
+
+.perfectHint {
+    -fx-text-fill: #ff2020;
+    -fx-font-weight: bold;
+}
+
+#undefCell {
+    -fx-background-color: #b6b6b6;
+}
+
+#emptyCell {
+    -fx-background-color: #ffffff;
+}
+
+#filledCell {
+    -fx-background-color: #000000;
+}
