@@ -8,6 +8,10 @@
     -fx-font-weight: bold;
 }
 
+.incompleteBlock {
+    -fx-text-fill: #000000;
+}
+
 #undefCell {
     -fx-background-color: #b6b6b6;
 }
