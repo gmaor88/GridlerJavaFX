@@ -59,8 +59,8 @@ public class GamePlayer {
         m_NumOfMovesMade++;
     }
 
-    private void insertMoveToMoveList(MoveSet i_move){
-        m_MoveList.addFirst(i_move.toString());
+    private void insertMoveToMoveList(MoveSet i_Move){
+        m_MoveList.addFirst(i_Move.toString());
         m_NumOfMovesMade++;
     }
 
@@ -133,8 +133,9 @@ public class GamePlayer {
         m_MoveList.removeFirst();
     }
 
-    public void incrementNumOfRedos(){
-        m_NumOfMovesMade++;
+    public void incrementNumOfRedos(MoveSet i_Move){
+        insertMoveToMoveList(i_Move);
+        //m_NumOfMovesMade++;
         m_NumOfRedoMade++;
     }
 
@@ -158,8 +159,9 @@ public class GamePlayer {
     }
 
     public void redo() {
+        incrementNumOfRedos(m_RedoList.getFirst());//maybe peek?
         m_UndoList.addFirst(undoRedoHandler(m_RedoList));
-        incrementNumOfRedos();
+        //incrementNumOfRedos();
     }
 
     private MoveSet undoRedoHandler(LinkedList<MoveSet> i_MoveSetList){
@@ -167,9 +169,9 @@ public class GamePlayer {
         Square.eSquareSign sign;
 
         for(Point point: i_MoveSetList.getFirst().getPointsList()){
-            sign = m_GameBoard.getSquare(point.getRowCord(), point.getColCord()).getCurrentSquareSign();
+            sign = m_GameBoard.getSquare(point.getRowCord() + 1, point.getColCord() + 1).getCurrentSquareSign();
             moveSet.AddNewPoint(point.getRowCord(),point.getColCord(),sign);
-            m_GameBoard.getSquare(point.getRowCord(), point.getColCord()).setCurrentSquareSign(point.getSign());
+            m_GameBoard.getSquare(point.getRowCord() + 1, point.getColCord() + 1).setCurrentSquareSign(point.getSign());
         }
 
         i_MoveSetList.removeFirst();
