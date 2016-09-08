@@ -48,8 +48,8 @@ public class GameBoard {
    }
 
     private void copyGameBoardData(GameBoard i_GameBoard) {
-        copySlices(m_VerticalSlices, i_GameBoard.m_HorizontalSlices);
-        copySlices(m_HorizontalSlices, i_GameBoard.m_VerticalSlices);
+        copySlices(m_HorizontalSlices, i_GameBoard.m_HorizontalSlices);
+        copySlices(m_VerticalSlices, i_GameBoard.m_VerticalSlices);
         copyBoard(i_GameBoard.m_Board);
     }
 
@@ -61,10 +61,10 @@ public class GameBoard {
         }
     }
 
-    private void copySlices(ArrayList<ArrayList<Block>> i_DestintionSlices, ArrayList<ArrayList<Block>> i_SourceSlices) {
+    private void copySlices(ArrayList<ArrayList<Block>> i_DestinationSlices, ArrayList<ArrayList<Block>> i_SourceSlices) {
         for(int i = 0; i < i_SourceSlices.size(); i++){
             for (int j = 0; j < i_SourceSlices.get(i).size(); j++){
-                i_DestintionSlices.get(i).add(new Block(i_SourceSlices.get(i).get(j).getSize()));
+                i_DestinationSlices.get(i).add(new Block(i_SourceSlices.get(i).get(j).getSize()));
             }
         }
     }
