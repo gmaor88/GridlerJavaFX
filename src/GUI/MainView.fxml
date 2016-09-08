@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -47,6 +48,22 @@
             <Menu mnemonicParsing="false" text="View">
               <items>
                 <MenuItem fx:id="showStatisticsMenuItem" disable="true" mnemonicParsing="false" onAction="#showStatisticsOnClick" text="Show Statistics" />
+                  <Menu fx:id="PlayersBoardsMenu" disable="true" mnemonicParsing="false" onAction="#PlayersBoardsMenuOnClick" text="Players Boards">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Skins">
+                     <items>
+                        <RadioMenuItem fx:id="defaultSkinRadioMenuItem" mnemonicParsing="false" onAction="#defaultSkinRadioMenuItemOnClick" selected="true" text="Default skin">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="SkinSelect" />
+                           </toggleGroup>
+                        </RadioMenuItem>
+                        <RadioMenuItem fx:id="XSkinRadioMenuItem" mnemonicParsing="false" onAction="#XSkinRadioMenuItemOnClick" text="X skin" toggleGroup="$SkinSelect" />
+                        <RadioMenuItem fx:id="YSkinRadioMenuItem" mnemonicParsing="false" onAction="#YSkinRadioMenuItemOnClick" text="Y skin" toggleGroup="$SkinSelect" />
+                     </items>
+                  </Menu>
               </items>
             </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">

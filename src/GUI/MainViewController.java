@@ -94,6 +94,30 @@ public class MainViewController implements Initializable{
     @FXML
     private BorderPane mainBoarderPane;
     @FXML
+    private Menu PlayersBoardsMenu;
+    @FXML
+    private RadioMenuItem defaultSkinRadioMenuItem;
+    @FXML
+    private RadioMenuItem XSkinRadioMenuItem;
+    @FXML
+    private RadioMenuItem YSkinRadioMenuItem;
+    @FXML
+    private void PlayersBoardsMenuOnClick(){
+
+    }
+    @FXML
+    private void defaultSkinRadioMenuItemOnClick(){
+
+    }
+    @FXML
+    private void XSkinRadioMenuItemOnClick(){
+
+    }
+    @FXML
+    private void YSkinRadioMenuItemOnClick(){
+
+    }
+    @FXML
     public void endTurnOnClick() {
 
     }
