@@ -12,10 +12,10 @@
     -fx-background-color: #b6b6b6;
 }
 
-#emptyCell {
+#clearedCell {
     -fx-background-color: #ffffff;
 }
 
-#filledCell {
+#blackedCell {
     -fx-background-color: #000000;
 }
