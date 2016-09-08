@@ -102,6 +102,13 @@ public class MainViewController implements Initializable{
     @FXML
     private RadioMenuItem YSkinRadioMenuItem;
     @FXML
+    private MenuItem ShowMovesListMenuItem;
+
+    @FXML
+    private void ShowMovesListMenuItemOnClick(){
+
+    }
+    @FXML
     private void PlayersBoardsMenuOnClick(){
 
     }

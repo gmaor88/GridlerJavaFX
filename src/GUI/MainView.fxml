@@ -48,6 +48,7 @@
             <Menu mnemonicParsing="false" text="View">
               <items>
                 <MenuItem fx:id="showStatisticsMenuItem" disable="true" mnemonicParsing="false" onAction="#showStatisticsOnClick" text="Show Statistics" />
+                  <MenuItem fx:id="ShowMovesListMenuItem" mnemonicParsing="false" onAction="#ShowMovesListMenuItemOnClick" text="Show moves list" />
                   <Menu fx:id="PlayersBoardsMenu" disable="true" mnemonicParsing="false" onAction="#PlayersBoardsMenuOnClick" text="Players Boards">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Action 1" />
