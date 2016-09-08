@@ -172,6 +172,7 @@ public class MainViewController implements Initializable{
             sign = Square.eSquareSign.CLEARED;
         }
 
+        m_CurrentMove = new MoveSet(commentTextField.getText());
         for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
             m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
             setBoardButtonStyle(entry.getValue(), sign);
@@ -179,7 +180,16 @@ public class MainViewController implements Initializable{
 
         m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
         redoUndoMenuItemsAvailabilityModifier();
-        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        setForNextTurnOrMove();
+    }
+
+    private void setForNextTurnOrMove() {
+        for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
+            entry.getValue().getStyleClass().remove("buttonSelected");
+        }
+
+        m_ButtonsSelected.clear();
     }
 
     private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
@@ -197,7 +207,7 @@ public class MainViewController implements Initializable{
 
     private void redoUndoMenuItemsAvailabilityModifier(){
         UndoMenuItem.setDisable(!m_CurrentPlayer.isUndoAvailable());
-        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() || !m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML
@@ -261,11 +271,11 @@ public class MainViewController implements Initializable{
 
          if(!m_ButtonsSelected.containsKey(pair)){
              m_ButtonsSelected.put(pair,i_Button);
-             i_Button.getStyleClass().add("buttonSelected");//// TODO: 9/6/2016 selected
+             i_Button.getStyleClass().add("buttonSelected");
          }
          else {
              m_ButtonsSelected.remove(pair);
-             i_Button.getStyleClass().remove("buttonSelected");// // TODO: 9/6/2016 unselected
+             i_Button.getStyleClass().remove("buttonSelected");
          }
     }
 
@@ -297,15 +307,16 @@ public class MainViewController implements Initializable{
         m_CurrentPlayer.undo();
         showBoard(m_CurrentPlayer);
         redoUndoMenuItemsAvailabilityModifier();
-        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML
     public void redoMoveOnClick() {
         m_CurrentPlayer.redo();
         showBoard(m_CurrentPlayer);
-        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
-        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        redoUndoMenuItemsAvailabilityModifier();
+        //RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML

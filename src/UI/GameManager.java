@@ -498,7 +498,7 @@ public class GameManager {
 
         try {
             m_UndoList.addFirst(undoRedoHandler(m_RedoList));
-            m_Player.incrementNumOfRedos();
+            //m_Player.incrementNumOfRedos();
         }
         catch (Exception e){
             System.out.println(e.getMessage());
