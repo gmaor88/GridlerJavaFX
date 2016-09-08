@@ -162,6 +162,18 @@ public class GameBoard {
 
         return moveset;
     }
+
+    MoveSet insert(MoveSet i_Move){
+        MoveSet moveset = new MoveSet(i_Move.getComment());
+
+        for (Point point:i_Move.getPointsList()){
+            moveset.AddNewPoint(point.getRowCord(), point.getColCord(),
+                    m_Board[point.getRowCord()][point.getColCord()].getCurrentSquareSign());
+            m_Board[point.getRowCord()][point.getColCord()].setCurrentSquareSign(point.getSign());
+        }
+
+        return moveset;
+    }
     
     public void updateBlocks(){
         clearMarking();

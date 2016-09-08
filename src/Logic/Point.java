@@ -27,4 +27,9 @@ public class Point {
     public Integer getRowCord() {
         return m_RowCord;
     }
+
+    @Override
+    public String toString() {
+        return String.format("(%d,%d)", m_RowCord, m_ColCord);
+    }
 }

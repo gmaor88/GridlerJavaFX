@@ -30,4 +30,18 @@ public class MoveSet {
     public String getComment (){
         return m_Comment;
     }
+
+    @Override
+    public String toString(){
+        String Msg;
+
+        Msg = m_Comment + ": ";
+        for (Point point:m_PointsList){
+            Msg += point.toString();
+        }
+
+        Msg += ". " + m_PointsList.getFirst().getSign().toString();
+
+        return Msg;
+    }
 }
