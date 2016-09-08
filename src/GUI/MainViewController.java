@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -87,7 +88,8 @@ public class MainViewController implements Initializable{
     private GridPane BoardGridPane;
     @FXML
     private MenuItem showStatisticsMenuItem;
-
+    @FXML
+    private BorderPane mainBoarderPane;
     @FXML
     public void endTurnOnClick() {
 
@@ -145,39 +147,39 @@ public class MainViewController implements Initializable{
     }
 
     private void buildBoard() {
-       // BoardGridPane = new GridPane();
-        int j;
-        //Button bSquare;
+       BoardGridPane = new GridPane();
+       int j;
+       //Button bSquare;
+       mainBoarderPane.setCenter(BoardGridPane);
+       BoardGridPane.setAlignment(Pos.CENTER);
+       for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
+           for (j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+               final int column = j;
+               final int row = i;
+               final Button bSquare = new Button();
+               bSquare.setDisable(true);
+               bSquare.setMinWidth(25);
+               bSquare.setMinHeight(25);
+               bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
+               bSquare.setAlignment(Pos.CENTER);
+               bSquare.setId("undefCell");
+               //bSquare.getStyleClass();//same
+               BoardGridPane.add(bSquare, j, i);
+           }
 
-        BoardGridPane.setAlignment(Pos.TOP_LEFT);
-        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
-            for (j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
-                final int column = j;
-                final int row = i;
-                final Button bSquare = new Button();
-                bSquare.setDisable(true);
-                bSquare.setMinWidth(25);
-                bSquare.setMinHeight(25);
-                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
-                bSquare.setAlignment(Pos.CENTER);
-                bSquare.setId("undefCell");
-                //bSquare.getStyleClass();//same
-                BoardGridPane.add(bSquare, j, i);
-            }
+           for(Block block:m_LoadedBoard.getHorizontalSlice(i)){//was i -1
+               addBlockLabel(BoardGridPane, j, i, block.toString());
+               j++;
+           }
+       }
 
-            for(Block block:m_LoadedBoard.getHorizontalSlice(i)){//was i -1
-                addBlockLabel(BoardGridPane, j, i, block.toString());
-                j++;
-            }
-        }
-
-        for(int i = 0; i < m_LoadedBoard.getBoardWidth(); i++){
-            j = m_LoadedBoard.getBoardHeight();
-            for(Block block:m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
-                addBlockLabel(BoardGridPane, i , j, block.toString());
-                j++;
-            }
-        }
+       for(int i = 0; i < m_LoadedBoard.getBoardWidth(); i++){
+           j = m_LoadedBoard.getBoardHeight();
+           for(Block block:m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
+               addBlockLabel(BoardGridPane, i , j, block.toString());
+               j++;
+           }
+       }
     }
 
     private void buttonClicked(int i_ColumnIndex, int i_RowIndex, Button i_Button){
