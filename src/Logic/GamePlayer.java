@@ -81,7 +81,7 @@ public class GamePlayer {
     }
 
     public Square.eSquareSign getGameBoardSquareSign(int i_RowIndex, int i_ColumnIndex){
-        return m_GameBoard.getSquare(i_RowIndex,i_ColumnIndex).getCurrentSquareSign();//need to catch??
+        return m_GameBoard.getSquare(i_RowIndex + 1,i_ColumnIndex + 1).getCurrentSquareSign();//need to catch??
     }
 
     public ArrayList getHorizontalSlice(int i_RowIndex){
@@ -125,7 +125,10 @@ public class GamePlayer {
     }
 
     public void incrementNumOfUndos(){
-        m_NumOfMovesMade--;
+        if(m_NumOfMovesMade > 0){
+            m_NumOfMovesMade--;
+        }
+
         m_NumOfUndoMade++;
         m_MoveList.removeFirst();
     }

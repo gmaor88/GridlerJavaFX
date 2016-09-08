@@ -176,21 +176,37 @@ public class MainViewController implements Initializable{
     }
 
     private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
+        String buttonId = "undefCell";
 
+        if(sign == Square.eSquareSign.BLACKED){
+            buttonId = "blackedCell";
+        }
+        else if(sign == Square.eSquareSign.CLEARED){
+            buttonId = "clearedCell";
+        }
+
+        value.setId(buttonId);
     }
 
     private void redoUndoMenuItemsAvailabilityModifier(){
         UndoMenuItem.setDisable(!m_CurrentPlayer.isUndoAvailable());
-        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable());
+        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML
     public void startGameOnClick() {
+        setBoardsOnPlayers();
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         startGameMenuItem.setDisable(true);
         showBoard(m_CurrentPlayer);
         RedoMenuItem.setDisable(true);
         UndoMenuItem.setDisable(true);
+    }
+
+    private void setBoardsOnPlayers() {
+        for(GamePlayer player:m_Players){
+            player.setGameBoarrd(m_LoadedBoard);
+        }
     }
 
     private void buildBoard() {
@@ -225,6 +241,7 @@ public class MainViewController implements Initializable{
 
        for(int i = 0; i < m_LoadedBoard.getBoardWidth(); i++){
            j = m_LoadedBoard.getBoardHeight();
+           m_VerticalBlocksLabel.add(new ArrayList<>());
            for(Block block:m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
                addBlockLabel(BoardGridPane, i , j, block.toString(), m_VerticalBlocksLabel.get(i));
                j++;
@@ -237,11 +254,11 @@ public class MainViewController implements Initializable{
 
          if(!m_ButtonsSelected.containsKey(pair)){
              m_ButtonsSelected.put(pair,i_Button);
-             //i_Button.getStyleClass().add();//// TODO: 9/6/2016 selected
+             i_Button.getStyleClass().add("buttonSelected");//// TODO: 9/6/2016 selected
          }
          else {
              m_ButtonsSelected.remove(pair);
-            // i_Button.getStyleClass().remove();// // TODO: 9/6/2016 unselected
+             i_Button.getStyleClass().remove("buttonSelected");// // TODO: 9/6/2016 unselected
          }
     }
 
@@ -272,7 +289,7 @@ public class MainViewController implements Initializable{
     public void undoMoveOnClick() {
         m_CurrentPlayer.undo();
         showBoard(m_CurrentPlayer);
-        UndoMenuItem.setDisable(!m_CurrentPlayer.isUndoAvailable());
+        redoUndoMenuItemsAvailabilityModifier();
         makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
@@ -280,7 +297,7 @@ public class MainViewController implements Initializable{
     public void redoMoveOnClick() {
         m_CurrentPlayer.redo();
         showBoard(m_CurrentPlayer);
-        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable());
+        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
@@ -329,20 +346,11 @@ public class MainViewController implements Initializable{
     }
 
     private void showBoard(GamePlayer i_Player){
-        String buttonId = "undefCell";
-
         clearBoard();
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             updateBlocks(m_HorizontalBlocksLabel.get(i), i_Player.getHorizontalSlice(i));
             for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
-                if(i_Player.getGameBoardSquareSign(i,j) == Square.eSquareSign.BLACKED){
-                    buttonId = "blackedCell";
-                }
-                else if(i_Player.getGameBoardSquareSign(i,j) == Square.eSquareSign.CLEARED){
-                    buttonId = "clearedCell";
-                }
-
-                m_GameBoardButtons.get(i).get(j).setId(buttonId);
+                setBoardButtonStyle(m_GameBoardButtons.get(i).get(j), i_Player.getGameBoardSquareSign(i,j));
                 m_GameBoardButtons.get(i).get(j).setDisable(!i_Player.getId().equalsIgnoreCase(m_CurrentPlayer.getId()));
             }
         }
