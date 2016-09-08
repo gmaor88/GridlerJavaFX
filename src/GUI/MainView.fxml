@@ -26,7 +26,10 @@
                 <Menu fx:id="fieMenu" mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem fx:id="loadGameMenuItem" mnemonicParsing="false" onAction="#loadGameOnClick" text="Load new game" />
-                        <MenuItem fx:id="startGameMenuItem" disable="true" mnemonicParsing="false" onAction="#startGameOnClick" text="Start Game" />
+                        <MenuItem fx:id="startGameMenuItem" disable="true" mnemonicParsing="false" onAction="#startGameOnClick" text="Start Game">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F2" control="UP" meta="UP" shift="UP" shortcut="ANY" />
+                     </accelerator></MenuItem>
                         <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="ANY" />
@@ -151,7 +154,7 @@
                                         </Button>
                                     </children>
                                 </HBox>
-                        <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextArea fx:id="commentTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                             </children>
                         </GridPane>
                         <GridPane layoutX="1.0" layoutY="59.0" prefHeight="108.0" prefWidth="228.0">

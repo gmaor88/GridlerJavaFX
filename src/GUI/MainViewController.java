@@ -8,6 +8,8 @@ import Logic.*;
 import Utils.GameLoadException;
 import Utils.GameLoader;
 import Utils.JaxBGridlerClassGenerator;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -82,7 +84,7 @@ public class MainViewController implements Initializable{
     @FXML
     private RadioButton undefinedRadioButton;
     @FXML
-    private TextField commentTextField;
+    private TextArea commentTextArea;
     @FXML
     private Button makeMoveButton;
     @FXML
@@ -106,6 +108,19 @@ public class MainViewController implements Initializable{
 
     @FXML
     private void ShowMovesListMenuItemOnClick(){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowMoveList.fxml"));
+            Parent root = fxmlLoader.load();
+            ShowMoveListController controller = (ShowMoveListController) fxmlLoader.getController();
+            ObservableList<String> items = FXCollections.observableList(m_CurrentPlayer.getMoveList());
+            controller.getMoveListListView().setItems(items);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root,400,400));
+            stage.show();
+        }
+        catch (IOException e){
+            showErrorMsg("FXML loading error", "statistics fxml could not be loaded");
+        }
 
     }
     @FXML
@@ -172,7 +187,7 @@ public class MainViewController implements Initializable{
             sign = Square.eSquareSign.CLEARED;
         }
 
-        m_CurrentMove = new MoveSet(commentTextField.getText());
+        m_CurrentMove = new MoveSet(commentTextArea.getText());
         for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
             m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
             setBoardButtonStyle(entry.getValue(), sign);
