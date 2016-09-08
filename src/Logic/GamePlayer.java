@@ -2,6 +2,7 @@ package Logic;
 
 import Utils.BadMoveInputException;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -73,6 +74,22 @@ public class GamePlayer {
 
     public Square.eSquareSign getGameBoardSquareSign(int i_RowIndex, int i_ColumnIndex){
         return m_GameBoard.getSquare(i_RowIndex,i_ColumnIndex).getCurrentSquareSign();//need to catch??
+    }
+
+    public ArrayList getHorizontalSlice(int i_RowIndex){
+        return m_GameBoard.getHorizontalSlice(i_RowIndex);
+    }
+
+    public ArrayList getVerticalSlice(int i_ColumnIndex){
+        return m_GameBoard.getVerticalSlice(i_ColumnIndex);
+    }
+
+    public boolean isGameBoardHorizontalBlockPerfect(int i_RowIndex, int i_ColumnIndex){
+        return m_GameBoard.getHorizontalSlice(i_RowIndex).get(i_ColumnIndex).isMarked();
+    }
+
+    public boolean isGameBoardVerticalBlockPerfect(int i_RowIndex, int i_ColumnIndex){
+        return m_GameBoard.getVerticalSlice(i_ColumnIndex).get(i_RowIndex).isMarked();
     }
 
     public Boolean getIsHuman() {

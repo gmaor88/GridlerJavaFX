@@ -36,6 +36,9 @@ public class MainViewController implements Initializable{
     private int m_CurrentPlayerIndex;
     private HashMap<Pair<Integer,Integer>,Button> m_ButtonsSelected = new HashMap();
     private MoveSet m_CurrentMove;
+    private ArrayList<ArrayList<Label>> m_HorizontalBlocksLabel = new ArrayList<>();
+    private ArrayList<ArrayList<Label>> m_VerticalBlocksLabel = new ArrayList<>();
+    private ArrayList<ArrayList<Button>> m_GameBoardButtons = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,6 +113,7 @@ public class MainViewController implements Initializable{
             startGameMenuItem.setDisable(false);
             m_CurrentPlayerIndex = 0;
             m_CurrentPlayer = null;
+            clearArrayLists();
             buildBoard();
         } catch (JAXBException e) {//need to change!
             showErrorMsg("FIle loading error", "Illegal file");
@@ -117,6 +121,12 @@ public class MainViewController implements Initializable{
             showErrorMsg("FIle loading error", ex.getMessage());
         }
         //todo show preview board and list of players
+    }
+
+    private void clearArrayLists() {
+        m_HorizontalBlocksLabel.clear();
+        m_VerticalBlocksLabel.clear();
+        m_GameBoardButtons.clear();
     }
 
     @FXML
@@ -153,6 +163,8 @@ public class MainViewController implements Initializable{
        mainBoarderPane.setCenter(BoardGridPane);
        BoardGridPane.setAlignment(Pos.CENTER);
        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
+           m_GameBoardButtons.add(new ArrayList<Button>());
+           m_HorizontalBlocksLabel.add(new ArrayList<>());
            for (j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
                final int column = j;
                final int row = i;
@@ -164,11 +176,12 @@ public class MainViewController implements Initializable{
                bSquare.setAlignment(Pos.CENTER);
                bSquare.setId("undefCell");
                //bSquare.getStyleClass();//same
+               m_GameBoardButtons.get(i).add(bSquare);
                BoardGridPane.add(bSquare, j, i);
            }
 
            for(Block block:m_LoadedBoard.getHorizontalSlice(i)){//was i -1
-               addBlockLabel(BoardGridPane, j, i, block.toString());
+               addBlockLabel(BoardGridPane, j, i, block.toString(), m_HorizontalBlocksLabel.get(i));
                j++;
            }
        }
@@ -176,7 +189,7 @@ public class MainViewController implements Initializable{
        for(int i = 0; i < m_LoadedBoard.getBoardWidth(); i++){
            j = m_LoadedBoard.getBoardHeight();
            for(Block block:m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
-               addBlockLabel(BoardGridPane, i , j, block.toString());
+               addBlockLabel(BoardGridPane, i , j, block.toString(), m_VerticalBlocksLabel.get(i));
                j++;
            }
        }
@@ -195,11 +208,12 @@ public class MainViewController implements Initializable{
          }
     }
 
-    private void addBlockLabel(GridPane i_GridPane, int i_ColumnIndex, int i_RowIndex, String i_blockSize) {
+    private void addBlockLabel(GridPane i_GridPane, int i_ColumnIndex, int i_RowIndex, String i_blockSize, ArrayList<Label> i_SliceLabels) {
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
        // lBlock.setId();//// TODO: 9/6/2016
         //lBlock.getStyleClass();//// TODO: 9/6/2016
+        i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
     }
 
@@ -269,5 +283,60 @@ public class MainViewController implements Initializable{
         alert.setHeaderText("ERROR!");
         alert.setContentText(i_ErrorMsg);
         alert.showAndWait();
+    }
+
+    private void showBoard(GamePlayer i_Player){
+        String buttonId = "undefCell";
+
+        clearBoard();
+        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
+            updateBlocks(m_HorizontalBlocksLabel.get(i), i_Player.getHorizontalSlice(i));
+            for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+                if(i_Player.getGameBoardSquareSign(i,j) == Square.eSquareSign.BLACKED){
+                    buttonId = "blackedCell";
+                }
+                else if(i_Player.getGameBoardSquareSign(i,j) == Square.eSquareSign.CLEARED){
+                    buttonId = "clearedCell";
+                }
+
+                m_GameBoardButtons.get(i).get(j).setId(buttonId);
+                m_GameBoardButtons.get(i).get(j).setDisable(!i_Player.getId().equalsIgnoreCase(m_CurrentPlayer.getId()));
+            }
+        }
+
+        for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+            updateBlocks(m_VerticalBlocksLabel.get(j), i_Player.getVerticalSlice(j));
+        }
+    }
+
+    private void clearBoard() {
+        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
+            clearSlice(m_HorizontalBlocksLabel.get(i));
+            for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+                m_GameBoardButtons.get(i).get(j).setId("undefCell");
+            }
+        }
+
+        for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+            clearSlice(m_VerticalBlocksLabel.get(j));
+        }
+    }
+
+    private void clearSlice(ArrayList<Label> i_Labels) {
+        for (Label label: i_Labels){
+            label.setId("incompleteBlock");
+        }
+    }
+
+    private void updateBlocks(ArrayList<Label> i_Labels, ArrayList<Block> i_Blocks) {
+        int i = 0;
+
+        for(Label label: i_Labels){
+            if(i_Blocks.get(i).isMarked()){
+                label.setId("perfectBlock");
+            }
+
+            i++;
+        }
     }
 }
