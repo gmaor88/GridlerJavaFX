@@ -9,8 +9,11 @@ import Utils.GameLoadException;
 import Utils.GameLoader;
 import Utils.JaxBGridlerClassGenerator;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -20,6 +23,7 @@ import jaxb.GameDescriptor;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -241,7 +245,19 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void showStatisticsOnClick(){
-
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowStatistics.fxml"));
+            Parent root = fxmlLoader.load();
+            ShowStatisticsController controller = (ShowStatisticsController) fxmlLoader.getController();
+            controller.getNumberOfMovesPlayedLable().setText(m_CurrentPlayer.getNumOfMovesMade().toString());
+            controller.getNumberOfRedoPlayedLable().setText(m_CurrentPlayer.getNumOfRedoMade().toString());
+            controller.getNumberOfUndoPlayedLable().setText(m_CurrentPlayer.getNumOfUndoMade().toString());
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root,400,400));
+            stage.show();}
+        catch (IOException e){
+            showErrorMsg("FXML loading error", "statistics fxml could not be loaded");
+        }
     }
 
     private void showErrorMsg(String i_MsgHeather, String i_ErrorMsg){
