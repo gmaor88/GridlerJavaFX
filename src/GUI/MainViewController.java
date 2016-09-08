@@ -139,6 +139,7 @@ public class MainViewController implements Initializable{
             m_CurrentPlayer = null;
             clearArrayLists();
             buildBoard();
+            enableDisableControlButtons(true);
         } catch (JAXBException e) {//need to change!
             showErrorMsg("FIle loading error", "Illegal file");
         } catch (GameLoadException ex) {
@@ -168,16 +169,28 @@ public class MainViewController implements Initializable{
             m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
             setBoardButtonStyle(entry.getValue(), sign);
         }
+
+        m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
+        redoUndoMenuItemsAvailabilityModifier();
+        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
 
     }
 
+    private void redoUndoMenuItemsAvailabilityModifier(){
+        UndoMenuItem.setDisable(!m_CurrentPlayer.isUndoAvailable());
+        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable());
+    }
+
     @FXML
     public void startGameOnClick() {
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         startGameMenuItem.setDisable(true);
+        showBoard(m_CurrentPlayer);
+        RedoMenuItem.setDisable(true);
+        UndoMenuItem.setDisable(true);
     }
 
     private void buildBoard() {
@@ -257,12 +270,18 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void undoMoveOnClick() {
-        //m_CurrentPlayer.Undo();
+        m_CurrentPlayer.undo();
+        showBoard(m_CurrentPlayer);
+        UndoMenuItem.setDisable(!m_CurrentPlayer.isUndoAvailable());
+        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML
     public void redoMoveOnClick() {
-        //m_CurrentPlayer.redo();
+        m_CurrentPlayer.redo();
+        showBoard(m_CurrentPlayer);
+        RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable());
+        makeMoveButton.setDisable(m_CurrentPlayer.checkIfPlayerHasMovesLeft());
     }
 
     @FXML
@@ -331,6 +350,15 @@ public class MainViewController implements Initializable{
         for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
             updateBlocks(m_VerticalBlocksLabel.get(j), i_Player.getVerticalSlice(j));
         }
+
+        enableDisableControlButtons(!i_Player.getId().equalsIgnoreCase(m_CurrentPlayer.getId()));
+    }
+
+    private void enableDisableControlButtons(boolean i_Disable) {
+        makeMoveButton.setDisable(i_Disable);
+        endTurnButton.setDisable(i_Disable);
+        RedoMenuItem.setDisable(i_Disable);
+        UndoMenuItem.setDisable(i_Disable);
     }
 
     private void clearBoard() {

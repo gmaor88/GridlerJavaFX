@@ -36,6 +36,14 @@ public class GamePlayer {
 
     public  String getId(){return  f_Id;}
 
+    public boolean isUndoAvailable(){
+        return !m_UndoList.isEmpty();
+    }
+
+    public boolean isRedoAvailable(){
+        return !m_RedoList.isEmpty();
+    }
+
     public void setMoveLimit(Integer i_TurnLimit){
         m_TurnLimit = i_TurnLimit;
     }
@@ -141,12 +149,12 @@ public class GamePlayer {
         m_RedoList.clear();
     }
 
-    public void Undo() {
+    public void undo() {
         m_RedoList.addFirst(undoRedoHandler(m_UndoList));
         incrementNumOfUndos();
     }
 
-    public void Redo() {
+    public void redo() {
         m_UndoList.addFirst(undoRedoHandler(m_RedoList));
         incrementNumOfRedos();
     }
