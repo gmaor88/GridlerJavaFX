@@ -254,7 +254,8 @@ public class MainViewController implements Initializable{
             controller.getNumberOfUndoPlayedLable().setText(m_CurrentPlayer.getNumOfUndoMade().toString());
             Stage stage = new Stage();
             stage.setScene(new Scene(root,400,400));
-            stage.show();}
+            stage.show();
+        }
         catch (IOException e){
             showErrorMsg("FXML loading error", "statistics fxml could not be loaded");
         }
