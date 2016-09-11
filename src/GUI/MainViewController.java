@@ -333,8 +333,8 @@ public class MainViewController implements Initializable{
     private void addBlockLabel(GridPane i_GridPane, int i_ColumnIndex, int i_RowIndex, String i_blockSize, ArrayList<Label> i_SliceLabels) {
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
-       // lBlock.setId();//// TODO: 9/6/2016
-        //lBlock.getStyleClass();//// TODO: 9/6/2016
+        lBlock.setId("incompleteBlock");
+        lBlock.getStyleClass().add("boardBlockLabel");
         i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
     }
