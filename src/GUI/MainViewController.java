@@ -143,6 +143,7 @@ public class MainViewController implements Initializable{
     @FXML
     public void endTurnOnClick() {
         enableDisableControlButtons(true);
+        setForNextTurnOrMove();
         m_CurrentPlayer.endTurn();
         m_CurrentPlayerIndex++;
         if(m_CurrentPlayerIndex >= m_Players.size()){
@@ -150,6 +151,10 @@ public class MainViewController implements Initializable{
         }
 
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
+        if(!m_CurrentPlayer.checkIfPlayerHasTurnLeft()){
+            //// TODO: 9/11/2016 victoryTieHandler 
+        }
+        
         if(!m_CurrentPlayer.getIsHuman()){
             clearBoard();
             m_CurrentPlayer.AiPlay();
@@ -459,8 +464,8 @@ public class MainViewController implements Initializable{
 
     private void clearSlice(ArrayList<Label> i_Labels) {
         for (Label label: i_Labels){
-          //  label.setId("incompleteBlock");
-            label.getStyleClass().clear();
+            label.setId("incompleteBlock");
+            //label.getStyleClass().clear();
         }
     }
 
