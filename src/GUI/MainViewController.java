@@ -141,6 +141,29 @@ public class MainViewController implements Initializable{
     }
     @FXML
     public void endTurnOnClick() {
+        enableDisableControlButtons(true);
+        m_CurrentPlayer.endTurn();
+        m_CurrentPlayerIndex++;
+        if(m_CurrentPlayerIndex >= m_Players.size()){
+            m_CurrentPlayerIndex = 0;
+        }
+
+        m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
+        if(!m_CurrentPlayer.getIsHuman()){
+            clearBoard();
+            m_CurrentPlayer.AiPlay();
+            if(m_CurrentPlayer.getScore() == 100){
+                //// TODO: 9/11/2016 victoryHandler
+            }
+            else {
+                endTurnOnClick();
+            }
+        }
+        else{
+            showBoard(m_CurrentPlayer);
+            enableDisableControlButtons(false);
+            redoUndoMenuItemsAvailabilityModifier();
+        }
 
     }
 
@@ -230,14 +253,25 @@ public class MainViewController implements Initializable{
         setBoardsOnPlayers();
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         startGameMenuItem.setDisable(true);
-        showBoard(m_CurrentPlayer);
-        RedoMenuItem.setDisable(true);
-        UndoMenuItem.setDisable(true);
+        if(m_CurrentPlayer.getIsHuman()) {
+            showBoard(m_CurrentPlayer);
+            RedoMenuItem.setDisable(true);
+            UndoMenuItem.setDisable(true);
+        }
+        else {
+            m_CurrentPlayer.AiPlay();
+            if(m_CurrentPlayer.getScore() == 100){
+                //// TODO: 9/11/2016 victoryHandler
+            }
+            else {
+                endTurnOnClick();
+            }
+        }
     }
 
     private void setBoardsOnPlayers() {
         for(GamePlayer player:m_Players){
-            player.setGameBoarrd(m_LoadedBoard);
+            player.setGameBoard(m_LoadedBoard);
         }
     }
 
@@ -379,7 +413,13 @@ public class MainViewController implements Initializable{
     }
 
     private void showBoard(GamePlayer i_Player){
+        if(i_Player != m_CurrentPlayer && !i_Player.getIsHuman()){
+            //// TODO: 9/11/2016 eror msg
+            return;
+        }
+
         clearBoard();
+        i_Player.updateBlocks();//// TODO: 9/11/2016 use in progarss thread
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             updateBlocks(m_HorizontalBlocksLabel.get(i), i_Player.getHorizontalSlice(i));
             for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
@@ -395,7 +435,7 @@ public class MainViewController implements Initializable{
         enableDisableControlButtons(!i_Player.getId().equalsIgnoreCase(m_CurrentPlayer.getId()));
     }
 
-    private void enableDisableControlButtons(boolean i_Disable) {
+    private void enableDisableControlButtons(boolean i_Disable) {// if true the buttons disabled
         makeMoveButton.setDisable(i_Disable);
         endTurnButton.setDisable(i_Disable);
         RedoMenuItem.setDisable(i_Disable);
