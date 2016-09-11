@@ -132,15 +132,15 @@ public class GameBoard {
     }
 
     public Square getSquare(int i_Height, int i_Width) throws ArrayIndexOutOfBoundsException{
-        if(1 > i_Height || i_Height > f_BoardHeight){
+        if(0 > i_Height || i_Height > f_BoardHeight){//was 1>
             throw new ArrayIndexOutOfBoundsException ("Height Out of Bounds");
         }
 
-        if(1 > i_Width || i_Width > f_BoardWidth){
+        if(0 > i_Width || i_Width > f_BoardWidth){//was 1>
             throw new ArrayIndexOutOfBoundsException ("Width Out of Bounds");
         }
 
-        return  m_Board[i_Height - 1][i_Width - 1];
+        return  m_Board[i_Height][i_Width];//was with -1
     }
 
     public MoveSet insert(int i_StartRow, int i_StartColumn, int i_EndRow, int i_EndColumn, Square.eSquareSign i_Sign, String i_Comment) throws  ArrayIndexOutOfBoundsException{

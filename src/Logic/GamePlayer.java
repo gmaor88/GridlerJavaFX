@@ -87,7 +87,7 @@ public class GamePlayer {
     }
 
     public Square.eSquareSign getGameBoardSquareSign(int i_RowIndex, int i_ColumnIndex){
-        return m_GameBoard.getSquare(i_RowIndex + 1,i_ColumnIndex + 1).getCurrentSquareSign();//need to catch??
+        return m_GameBoard.getSquare(i_RowIndex, i_ColumnIndex).getCurrentSquareSign();//need to catch?? //was with + 1
     }
 
     public ArrayList getHorizontalSlice(int i_RowIndex){
@@ -173,12 +173,6 @@ public class GamePlayer {
         //incrementNumOfRedos();
     }
 
-    private void aiUndo(){
-        m_RedoList.addFirst(aiUndoRedoHandler(m_UndoList));
-        incrementNumOfUndos();
-        m_Score = m_GameBoard.getBoardCompletionPercentage();
-    }
-
     private MoveSet undoRedoHandler(LinkedList<MoveSet> i_MoveSetList){
         MoveSet moveSet = new MoveSet(i_MoveSetList.getFirst().getComment());
         Square.eSquareSign sign;
@@ -187,34 +181,12 @@ public class GamePlayer {
             sign = getGameBoardSquareSign(point.getRowCord(),point.getColCord());
             //sign = m_GameBoard.getSquare(point.getRowCord() + 1, point.getColCord() + 1).getCurrentSquareSign();
             moveSet.AddNewPoint(point.getRowCord(),point.getColCord(),sign);
-            m_GameBoard.getSquare(point.getRowCord() + 1, point.getColCord() + 1).setCurrentSquareSign(point.getSign());
+            m_GameBoard.getSquare(point.getRowCord(), point.getColCord()).setCurrentSquareSign(point.getSign());//was with + 1
         }
 
         i_MoveSetList.removeFirst();
 
         return moveSet;
-    }
-
-    private MoveSet aiUndoRedoHandler(LinkedList<MoveSet> i_MoveSetList){
-        MoveSet moveSet = new MoveSet(i_MoveSetList.getFirst().getComment());
-        Square.eSquareSign sign;
-
-        for(Point point: i_MoveSetList.getFirst().getPointsList()){
-           // sign = getGameBoardSquareSign(point.getRowCord(),point.getColCord());
-            sign = m_GameBoard.getSquare(point.getRowCord(), point.getColCord()).getCurrentSquareSign();
-            moveSet.AddNewPoint(point.getRowCord(),point.getColCord(),sign);
-            m_GameBoard.getSquare(point.getRowCord(), point.getColCord()).setCurrentSquareSign(point.getSign());
-        }
-
-        i_MoveSetList.removeFirst();
-
-        return moveSet;
-    }
-
-    private void aiRedo(){
-        incrementNumOfRedos(m_RedoList.getFirst());//maybe peek?
-        m_UndoList.addFirst(aiUndoRedoHandler(m_RedoList));
-        m_Score = m_GameBoard.getBoardCompletionPercentage();
     }
 
     public void AiPlay(){
@@ -247,7 +219,7 @@ public class GamePlayer {
                 m_Score = m_GameBoard.getBoardCompletionPercentage();
             }
             else{
-                aiUndo();
+                undo();
             }
         }
     }

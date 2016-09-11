@@ -66,7 +66,7 @@ public class GameLoader {
             rowIndex = i_GameDescriptor.getBoard().getSolution().getSquare().get(i).getRow().intValue();
             columnIndex = i_GameDescriptor.getBoard().getSolution().getSquare().get(i).getColumn().intValue();
             try {
-                board.getSquare(rowIndex, columnIndex).setTrueSquareSignValue(Square.eSquareSign.BLACKED);
+                board.getSquare(rowIndex - 1, columnIndex - 1).setTrueSquareSignValue(Square.eSquareSign.BLACKED); //was without -1
             }
             catch (ArrayIndexOutOfBoundsException e){
                 throw new GameLoadException(e.getMessage());
