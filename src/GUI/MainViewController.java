@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -289,14 +290,15 @@ public class MainViewController implements Initializable{
                final int row = i;
                final Button bSquare = new Button();
                bSquare.setDisable(true);
-               bSquare.setMinWidth(25);
-               bSquare.setMinHeight(25);
+               //bSquare.setMinWidth(25);
+               //bSquare.setMinHeight(25);
                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                bSquare.setAlignment(Pos.CENTER);
                bSquare.setId("undefCell");
-               //bSquare.getStyleClass();
+               bSquare.getStyleClass().add("boardButton");
                m_GameBoardButtons.get(i).add(bSquare);
                BoardGridPane.add(bSquare, j, i);
+               BoardGridPane.setMargin(bSquare, new Insets(0,0,2,1));
            }
 
            for(Block block:m_LoadedBoard.getHorizontalSlice(i)){//was i -1
