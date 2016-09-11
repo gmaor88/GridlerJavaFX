@@ -457,7 +457,8 @@ public class MainViewController implements Initializable{
 
     private void clearSlice(ArrayList<Label> i_Labels) {
         for (Label label: i_Labels){
-            label.setId("incompleteBlock");
+          //  label.setId("incompleteBlock");
+            label.getStyleClass().clear();
         }
     }
 
