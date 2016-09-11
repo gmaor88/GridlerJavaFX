@@ -260,7 +260,7 @@ public class MainViewController implements Initializable{
                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                bSquare.setAlignment(Pos.CENTER);
                bSquare.setId("undefCell");
-               //bSquare.getStyleClass();//same
+               //bSquare.getStyleClass();
                m_GameBoardButtons.get(i).add(bSquare);
                BoardGridPane.add(bSquare, j, i);
            }

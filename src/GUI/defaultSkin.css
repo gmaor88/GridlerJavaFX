@@ -1,6 +1,12 @@
 .buttonSelected {
     -fx-border-color: #3da812;
-    -fx-border-width: 3;
+    -fx-border-width: 2;
+}
+
+.boardButton{
+    -fx-padding: 2;
+    -fx-min-height: 25;
+    -fx-min-width: 25;
 }
 
 .perfectBlock {
