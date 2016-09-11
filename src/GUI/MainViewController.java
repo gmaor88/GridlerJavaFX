@@ -180,23 +180,24 @@ public class MainViewController implements Initializable{
         fileChooser.setTitle("Open XML File");
         startGameMenuItem.setDisable(true);
         File file = fileChooser.showOpenDialog(m_Stage);
-
-        try {//// TODO: 9/6/2016 use task bar and threds
-            GameDescriptor gameDescriptor = JaxBGridlerClassGenerator.FromXmlFileToObject(file.getAbsolutePath());
-            m_LoadedBoard = gameLoader.loadBoard(gameDescriptor);
-            m_Players = gameLoader.loadPlayer(gameDescriptor);
-            startGameMenuItem.setDisable(false);
-            m_CurrentPlayerIndex = 0;
-            m_CurrentPlayer = null;
-            clearArrayLists();
-            buildBoard();
-            enableDisableControlButtons(true);
-        } catch (JAXBException e) {//need to change!
-            showErrorMsg("FIle loading error", "Illegal file");
-        } catch (GameLoadException ex) {
-            showErrorMsg("FIle loading error", ex.getMessage());
+        if (file != null) {
+            try {//// TODO: 9/6/2016 use task bar and threds
+                GameDescriptor gameDescriptor = JaxBGridlerClassGenerator.FromXmlFileToObject(file.getAbsolutePath());
+                m_LoadedBoard = gameLoader.loadBoard(gameDescriptor);
+                m_Players = gameLoader.loadPlayer(gameDescriptor);
+                startGameMenuItem.setDisable(false);
+                m_CurrentPlayerIndex = 0;
+                m_CurrentPlayer = null;
+                clearArrayLists();
+                buildBoard();
+                enableDisableControlButtons(true);
+            } catch (JAXBException e) {//need to change!
+                showErrorMsg("FIle loading error", "Illegal file");
+            } catch (GameLoadException ex) {
+                showErrorMsg("FIle loading error", ex.getMessage());
+            }
         }
-        //todo show preview board and list of players
+        //todo show list of players in view
     }
 
     private void clearArrayLists() {
@@ -342,6 +343,7 @@ public class MainViewController implements Initializable{
         lBlock.getStyleClass().add("boardBlockLabel");
         i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
+        i_GridPane.setMargin(lBlock, new Insets(0,0,0,5));
     }
 
     @FXML
