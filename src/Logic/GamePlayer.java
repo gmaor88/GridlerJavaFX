@@ -4,6 +4,7 @@ import Utils.BadMoveInputException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * Created by Maor Gershkovitch on 8/8/2016.
@@ -23,6 +24,7 @@ public class GamePlayer {
     private Integer m_NumOfMovesMade = 0;
     private Integer m_NumOfUndoMade = 0;
     private Integer m_NumOfRedoMade = 0;
+    private double m_Score = 0;
 
     public GamePlayer(Boolean i_isHuman, String i_Name, String i_Id){
         f_IsHuman = i_isHuman;
@@ -30,7 +32,7 @@ public class GamePlayer {
         f_Id = i_Id;
     }
 
-    public void setGameBoarrd(GameBoard i_GameBoard){
+    public void setGameBoard(GameBoard i_GameBoard){
         m_GameBoard = new GameBoard(i_GameBoard);
     }
 
@@ -52,8 +54,12 @@ public class GamePlayer {
         return m_MoveList;
     }
 
+    public double getScore() {
+        return m_Score;
+    }
+
     public void insertMoveToMoveList(int i_StartRow, int i_StartColumn, int i_EndRow, int i_EndColumn,
-                                      Square.eSquareSign i_Sign, String i_Comment){
+                                     Square.eSquareSign i_Sign, String i_Comment){
         m_MoveList.addFirst(i_StartRow + "," + i_StartColumn + " " + i_EndRow + "," +
                 i_EndColumn + " " + i_Sign + " " + hasComment(i_Comment));
         m_NumOfMovesMade++;
@@ -151,16 +157,19 @@ public class GamePlayer {
         m_UndoList.addFirst(m_GameBoard.insert(i_Move));
         insertMoveToMoveList(i_Move);
         m_RedoList.clear();
+        m_Score = m_GameBoard.getBoardCompletionPercentage();
     }
 
     public void undo() {
         m_RedoList.addFirst(undoRedoHandler(m_UndoList));
         incrementNumOfUndos();
+        m_Score = m_GameBoard.getBoardCompletionPercentage();
     }
 
     public void redo() {
         incrementNumOfRedos(m_RedoList.getFirst());//maybe peek?
         m_UndoList.addFirst(undoRedoHandler(m_RedoList));
+        m_Score = m_GameBoard.getBoardCompletionPercentage();
         //incrementNumOfRedos();
     }
 
@@ -177,5 +186,71 @@ public class GamePlayer {
         i_MoveSetList.removeFirst();
 
         return moveSet;
+    }
+
+    public void AiPlay(){
+        Random rand = new Random();
+        int startRow,startCol, endRow, endCol;
+        Square.eSquareSign sign;
+
+        /*
+        *runs until one of the conditions have been meet
+        * selects randomly which blocks should be changed and to what sign
+        * if there have been no progress from the selection it will choose to undo its move
+         */
+        while (checkIfPlayerHasMovesLeft() && m_GameBoard.getBoardCompletionPercentage() != 100){
+            sign = randSign(rand);
+            startRow = rand.nextInt(m_GameBoard.getBoardHeight()) + 1;
+            endRow = getRandomEndRowOrCol(startRow,m_GameBoard.getBoardHeight(),rand);
+            startCol = rand.nextInt(m_GameBoard.getBoardWidth()) + 1;
+            endCol = getRandomEndRowOrCol(startCol,m_GameBoard.getBoardWidth(),rand);
+            try {
+                m_UndoList.addFirst(m_GameBoard.insert(startRow,startCol,endRow,endCol,sign,"Pc"));
+                m_RedoList.clear();
+                insertMoveToMoveList(startRow,startCol,endRow,endCol,sign,"Pc");
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                return;
+            }
+
+            if(m_Score < m_GameBoard.getBoardCompletionPercentage()){
+                m_Score = m_GameBoard.getBoardCompletionPercentage();
+            }
+            else{
+                undo();
+            }
+        }
+    }
+
+    private Square.eSquareSign randSign(Random i_Rand) {
+        Square.eSquareSign sign;
+        int numSign = i_Rand.nextInt(3) + 1;
+
+        if(numSign == 1){
+            sign = Square.eSquareSign.BLACKED;
+        }
+        else if(numSign == 2){
+            sign = Square.eSquareSign.CLEARED;
+        }
+        else {
+            sign = Square.eSquareSign.UNDEFINED;
+        }
+
+        return sign;
+    }
+
+    private int getRandomEndRowOrCol(int i_Start, int i_Limit, Random i_Rand) {
+        int end = i_Rand.nextInt(i_Limit) + 1;
+
+        if(i_Start > end){
+            end = i_Start;
+        }
+
+        return end;
+    }
+
+    public void updateBlocks(){
+        m_GameBoard.updateBlocks();
     }
 }
