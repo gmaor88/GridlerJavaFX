@@ -1,6 +1,6 @@
 package Logic;
 
-import Utils.BadMoveInputException;
+
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -201,9 +201,9 @@ public class GamePlayer {
          */
         while (checkIfPlayerHasMovesLeft() && m_GameBoard.getBoardCompletionPercentage() != 100){
             sign = randSign(rand);
-            startRow = rand.nextInt(m_GameBoard.getBoardHeight()) + 1;
+            startRow = rand.nextInt(m_GameBoard.getBoardHeight());
             endRow = getRandomEndRowOrCol(startRow,m_GameBoard.getBoardHeight(),rand);
-            startCol = rand.nextInt(m_GameBoard.getBoardWidth()) + 1;
+            startCol = rand.nextInt(m_GameBoard.getBoardWidth());
             endCol = getRandomEndRowOrCol(startCol,m_GameBoard.getBoardWidth(),rand);
             try {
                 m_UndoList.addFirst(m_GameBoard.insert(startRow,startCol,endRow,endCol,sign,"Pc"));

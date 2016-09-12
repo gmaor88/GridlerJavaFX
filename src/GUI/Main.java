@@ -19,7 +19,7 @@ public class Main extends Application {
         MainViewController controller = (MainViewController) fxmlLoader.getController();
         controller.init(primaryStage);
         primaryStage.setTitle("Gridler 2.0");
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         scene.getStylesheets().addAll(getClass().getResource("defaultSkin.css").toExternalForm());
         primaryStage.show();

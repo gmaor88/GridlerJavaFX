@@ -8,6 +8,7 @@ import Logic.*;
 import Utils.GameLoadException;
 import Utils.GameLoader;
 import Utils.JaxBGridlerClassGenerator;
+import com.sun.javafx.scene.control.behavior.TextInputControlBindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,6 +27,7 @@ import javafx.util.Pair;
 import jaxb.GameDescriptor;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.ws.Binding;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -45,7 +47,7 @@ public class MainViewController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        intitPlayerDataLabel();
     }
 
     public void init(Stage i_Stage) {
@@ -168,6 +170,7 @@ public class MainViewController implements Initializable{
             }
         }
         else{
+            updatePlayerDataLabels();
             showBoard(m_CurrentPlayer);
             enableDisableControlButtons(false);
             redoUndoMenuItemsAvailabilityModifier();
@@ -181,6 +184,7 @@ public class MainViewController implements Initializable{
         GameLoader gameLoader = new GameLoader();
         fileChooser.setTitle("Open XML File");
         startGameMenuItem.setDisable(true);
+        intitPlayerDataLabel();
         File file = fileChooser.showOpenDialog(m_Stage);
         if (file != null) {
             try {//// TODO: 9/6/2016 use task bar and threds
@@ -301,6 +305,7 @@ public class MainViewController implements Initializable{
         startGameMenuItem.setDisable(true);
         if(m_CurrentPlayer.getIsHuman()) {
             showBoard(m_CurrentPlayer);
+            updatePlayerDataLabels();
             RedoMenuItem.setDisable(true);
             UndoMenuItem.setDisable(true);
         }
@@ -463,7 +468,7 @@ public class MainViewController implements Initializable{
     //// TODO: 9/12/2016 when looking at another players board let get back to your board
     //// TODO: 9/12/2016 when game ends, open all players board for viewing.
     private void showBoard(GamePlayer i_Player){
-        if(i_Player != m_CurrentPlayer && !i_Player.getIsHuman()){
+        if(i_Player != m_CurrentPlayer && i_Player.getIsHuman()){
             //// TODO: 9/11/2016 error msg
             return;
         }
@@ -522,5 +527,21 @@ public class MainViewController implements Initializable{
 
             i++;
         }
+    }
+
+    private void updatePlayerDataLabels(){
+        playersNameLabel.setText(m_CurrentPlayer.getName());
+        scoreLabel.setText(((Integer)((int)m_CurrentPlayer.getScore())).toString());
+        IDLabel.setText(m_CurrentPlayer.getId());
+        turnsLeftInGameLabel.setText(m_CurrentPlayer.getTurnNumber().toString());
+        movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+    }
+
+    private void intitPlayerDataLabel(){
+        playersNameLabel.setText("");
+        scoreLabel.setText("");
+        IDLabel.setText("");
+        turnsLeftInGameLabel.setText("");
+        movesLeftInTurnLabel.setText("");
     }
 }
