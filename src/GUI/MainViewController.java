@@ -8,7 +8,6 @@ import Logic.*;
 import Utils.GameLoadException;
 import Utils.GameLoader;
 import Utils.JaxBGridlerClassGenerator;
-import com.sun.javafx.scene.control.behavior.TextInputControlBindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ import javafx.util.Pair;
 import jaxb.GameDescriptor;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.ws.Binding;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -208,7 +206,6 @@ public class MainViewController implements Initializable{
     }
 
     private void createPlayersBoardMenu() {
-        MenuItem  playerBoardMenuItem;
         int i = 1;
 
         for (GamePlayer player : m_Players){
@@ -216,8 +213,9 @@ public class MainViewController implements Initializable{
                 initPlayer1BoardMenuItem(player);
             }
             else{
-                playerBoardMenuItem = new MenuItem();
+                final MenuItem playerBoardMenuItem = new MenuItem();
                 playerBoardMenuItem.setText(player.getName());
+                player1BoardMenuItem.setId(player.getId());//Test
                 playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
                 PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
                 if(player.getIsHuman()){
@@ -231,16 +229,31 @@ public class MainViewController implements Initializable{
         PlayersBoardsMenu.setDisable(false);
     }
 
-    private void initPlayer1BoardMenuItem(GamePlayer i_player){
-        player1BoardMenuItem.setText(i_player.getName());
-        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_player));
-        if(i_player.getIsHuman()){
+    private void initPlayer1BoardMenuItem(GamePlayer i_Player){
+        player1BoardMenuItem.setText(i_Player.getName());
+        player1BoardMenuItem.setId(i_Player.getId());//Test
+        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_Player));
+        if(i_Player.getIsHuman()){
             player1BoardMenuItem.setDisable(true);
         }
     }
 
     private void playerBoardMenuItemClicked(GamePlayer i_Player) {
         showBoard(i_Player);
+        if (!i_Player.getIsHuman()) {
+            for (MenuItem item : PlayersBoardsMenu.getItems()) {
+                if (item.getText().equalsIgnoreCase(m_CurrentPlayer.getName())) {
+                    item.setDisable(false);
+                }
+            }
+        }
+        else if (i_Player == m_CurrentPlayer) {
+            for (MenuItem item : PlayersBoardsMenu.getItems()) {
+                if (item.getText().equalsIgnoreCase(m_CurrentPlayer.getName())) {
+                    item.setDisable(true);
+                }
+            }
+        }
     }
 
     private void clearArrayLists() {
@@ -465,7 +478,6 @@ public class MainViewController implements Initializable{
         alert.showAndWait();
     }
 
-    //// TODO: 9/12/2016 when looking at another players board let get back to your board
     //// TODO: 9/12/2016 when game ends, open all players board for viewing.
     private void showBoard(GamePlayer i_Player){
         if(i_Player != m_CurrentPlayer && i_Player.getIsHuman()){
