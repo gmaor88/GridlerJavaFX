@@ -5,6 +5,7 @@ package Logic;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Timer;
 
 /**
  * Created by Maor Gershkovitch on 8/8/2016.
@@ -17,7 +18,6 @@ public class GamePlayer {
     private GameBoard m_GameBoard;
     private Integer m_TurnLimit = 0;
     private Integer m_TurnNumber = 0;
-    private Long m_GameDurationTimer;
     private LinkedList<MoveSet> m_UndoList = new LinkedList<>();
     private LinkedList<MoveSet> m_RedoList = new LinkedList<>();
     private LinkedList<String> m_MoveList = new LinkedList();
@@ -25,11 +25,20 @@ public class GamePlayer {
     private Integer m_NumOfUndoMade = 0;
     private Integer m_NumOfRedoMade = 0;
     private double m_Score = 0;
+    private long m_Timer = 0;
 
     public GamePlayer(Boolean i_isHuman, String i_Name, String i_Id){
         f_IsHuman = i_isHuman;
         f_Name = i_Name;
         f_Id = i_Id;
+    }
+
+    public void incrementTime(){
+        m_Timer++;
+    }
+
+    public long getTimer() {
+        return m_Timer;
     }
 
     public void setGameBoard(GameBoard i_GameBoard){
@@ -242,7 +251,7 @@ public class GamePlayer {
     }
 
     private int getRandomEndRowOrCol(int i_Start, int i_Limit, Random i_Rand) {
-        int end = i_Rand.nextInt(i_Limit) + 1;
+        int end = i_Rand.nextInt(i_Limit);
 
         if(i_Start > end){
             end = i_Start;

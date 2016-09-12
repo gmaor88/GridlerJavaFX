@@ -132,11 +132,11 @@ public class GameBoard {
     }
 
     public Square getSquare(int i_Height, int i_Width) throws ArrayIndexOutOfBoundsException{
-        if(0 > i_Height || i_Height > f_BoardHeight){//was 1>
+        if(0 > i_Height || i_Height >= f_BoardHeight){//was 1>
             throw new ArrayIndexOutOfBoundsException ("Height Out of Bounds");
         }
 
-        if(0 > i_Width || i_Width > f_BoardWidth){//was 1>
+        if(0 > i_Width || i_Width >= f_BoardWidth){//was 1>
             throw new ArrayIndexOutOfBoundsException ("Width Out of Bounds");
         }
 

@@ -8,6 +8,7 @@ import Logic.*;
 import Utils.GameLoadException;
 import Utils.GameLoader;
 import Utils.JaxBGridlerClassGenerator;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,6 +43,7 @@ public class MainViewController implements Initializable{
     private ArrayList<ArrayList<Label>> m_HorizontalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Label>> m_VerticalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Button>> m_GameBoardButtons = new ArrayList<>();
+    private Timer timer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,6 +52,11 @@ public class MainViewController implements Initializable{
 
     public void init(Stage i_Stage) {
         m_Stage = i_Stage;
+        m_Stage.setOnCloseRequest((event)->StopTimer());
+    }
+
+    private void StopTimer() {
+        timer.cancel();
     }
 
     @FXML
@@ -146,6 +153,7 @@ public class MainViewController implements Initializable{
     public void endTurnOnClick() {
         enableDisableControlButtons(true);
         setForNextTurnOrMove();
+        timer.cancel();
         m_CurrentPlayer.endTurn();
         m_CurrentPlayerIndex++;
         if(m_CurrentPlayerIndex >= m_Players.size()){
@@ -159,6 +167,7 @@ public class MainViewController implements Initializable{
         
         if(!m_CurrentPlayer.getIsHuman()){
             clearBoard();
+            startTimer();
             m_CurrentPlayer.AiPlay();
             if(m_CurrentPlayer.getScore() == 100){
                 //// TODO: 9/11/2016 victoryHandler
@@ -412,10 +421,12 @@ public class MainViewController implements Initializable{
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             // Quit game - end player's game
+            timer.cancel();
         } else {
             // do nothing...
         }
     }
+
 
     @FXML
     public void undoMoveOnClick() {
@@ -547,6 +558,7 @@ public class MainViewController implements Initializable{
         IDLabel.setText(m_CurrentPlayer.getId());
         turnsLeftInGameLabel.setText(m_CurrentPlayer.getTurnNumber().toString());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        startTimer();
     }
 
     private void intitPlayerDataLabel(){
@@ -555,5 +567,21 @@ public class MainViewController implements Initializable{
         IDLabel.setText("");
         turnsLeftInGameLabel.setText("");
         movesLeftInTurnLabel.setText("");
+        timerLabel.setText("");
+    }
+
+    private void startTimer(){//// TODO: 9/12/2016 use timer.clear in ovvride onClose
+        timer = new java.util.Timer();
+
+        timer.schedule(new TimerTask() {
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        m_CurrentPlayer.incrementTime();
+                        timerLabel.setText(((Long)m_CurrentPlayer.getTimer()).toString());
+                    }
+                });
+            }
+        }, 1000, 1000);//delay, period
     }
 }
