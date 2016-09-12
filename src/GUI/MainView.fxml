@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainBoarderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainViewController">
+<BorderPane fx:id="mainBoarderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainViewController">
     <top>
         <MenuBar id="MenuBar" BorderPane.alignment="CENTER">
             <menus>
@@ -57,9 +57,9 @@
                 <MenuItem fx:id="showStatisticsMenuItem" disable="true" mnemonicParsing="false" onAction="#showStatisticsOnClick" text="Show Statistics" />
                   <MenuItem fx:id="ShowMovesListMenuItem" disable="true" mnemonicParsing="false" onAction="#ShowMovesListMenuItemOnClick" text="Show moves list" />
                   <Menu fx:id="PlayersBoardsMenu" disable="true" mnemonicParsing="false" onAction="#PlayersBoardsMenuOnClick" text="Players Boards">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                    </items>
+                     <items>
+                        <MenuItem fx:id="player1BoardMenuItem" mnemonicParsing="false" text="Unspecified Action" />
+                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Skins">
                      <items>

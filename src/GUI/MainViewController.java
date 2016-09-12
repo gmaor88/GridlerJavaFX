@@ -106,6 +106,8 @@ public class MainViewController implements Initializable{
     private RadioMenuItem YSkinRadioMenuItem;
     @FXML
     private MenuItem ShowMovesListMenuItem;
+    @FXML
+    private MenuItem player1BoardMenuItem;
 
     @FXML
     private void ShowMovesListMenuItemOnClick(){
@@ -190,6 +192,7 @@ public class MainViewController implements Initializable{
                 m_CurrentPlayer = null;
                 clearArrayLists();
                 buildBoard();
+                createPlayersBoardMenu();
                 enableDisableControlButtons(true);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
@@ -198,6 +201,42 @@ public class MainViewController implements Initializable{
             }
         }
         //todo show list of players in view
+    }
+
+    private void createPlayersBoardMenu() {
+        MenuItem  playerBoardMenuItem;
+        int i = 1;
+
+        for (GamePlayer player : m_Players){
+            if(i == 1){
+                initPlayer1BoardMenuItem(player);
+            }
+            else{
+                playerBoardMenuItem = new MenuItem();
+                playerBoardMenuItem.setText(player.getName());
+                playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
+                PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
+                if(player.getIsHuman()){
+                    playerBoardMenuItem.setDisable(true);
+                }
+            }
+
+            i++;
+        }
+
+        PlayersBoardsMenu.setDisable(false);
+    }
+
+    private void initPlayer1BoardMenuItem(GamePlayer i_player){
+        player1BoardMenuItem.setText(i_player.getName());
+        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_player));
+        if(i_player.getIsHuman()){
+            player1BoardMenuItem.setDisable(true);
+        }
+    }
+
+    private void playerBoardMenuItemClicked(GamePlayer i_Player) {
+        showBoard(i_Player);
     }
 
     private void clearArrayLists() {
@@ -421,9 +460,11 @@ public class MainViewController implements Initializable{
         alert.showAndWait();
     }
 
+    //// TODO: 9/12/2016 when looking at another players board let get back to your board
+    //// TODO: 9/12/2016 when game ends, open all players board for viewing.
     private void showBoard(GamePlayer i_Player){
         if(i_Player != m_CurrentPlayer && !i_Player.getIsHuman()){
-            //// TODO: 9/11/2016 eror msg
+            //// TODO: 9/11/2016 error msg
             return;
         }
 
