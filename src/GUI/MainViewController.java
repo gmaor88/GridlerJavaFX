@@ -52,7 +52,7 @@ public class MainViewController implements Initializable{
 
     public void init(Stage i_Stage) {
         m_Stage = i_Stage;
-        m_Stage.setOnCloseRequest((event)->StopTimer());
+        m_Stage.setOnCloseRequest((event)->StopTimer());//// TODO: 9/12/2016 maybe set to deamon by separting thread 
     }
 
     private void StopTimer() {
@@ -211,7 +211,6 @@ public class MainViewController implements Initializable{
                 showErrorMsg("FIle loading error", ex.getMessage());
             }
         }
-        //todo show list of players in view
     }
 
     private void createPlayersBoardMenu() {
@@ -570,7 +569,7 @@ public class MainViewController implements Initializable{
         timerLabel.setText("");
     }
 
-    private void startTimer(){//// TODO: 9/12/2016 use timer.clear in ovvride onClose
+    private void startTimer(){//// TODO: 9/12/2016 use timer.clear in override onClose
         timer = new java.util.Timer();
 
         timer.schedule(new TimerTask() {
