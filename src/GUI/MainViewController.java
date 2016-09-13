@@ -286,12 +286,16 @@ public class MainViewController implements Initializable{
             m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
             setBoardButtonStyle(entry.getValue(), sign);
         }
-
-        m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
-        redoUndoMenuItemsAvailabilityModifier();
-        makeMoveHandler();
-        makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
-        setForNextTurnOrMove();
+        if(m_CurrentMove.getPointsList().isEmpty()){
+            showInformationMsg("Make move", "Please mark squares before pressing on Make move button");
+        }
+        else{
+            m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
+            redoUndoMenuItemsAvailabilityModifier();
+            makeMoveHandler();
+            makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+            setForNextTurnOrMove();
+        }
     }
 
     private void makeMoveHandler() {
@@ -507,10 +511,18 @@ public class MainViewController implements Initializable{
         alert.showAndWait();
     }
 
+    private void showInformationMsg(String i_MsgHeather, String i_InfoMsg){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(i_MsgHeather);
+        alert.setContentText(i_InfoMsg);
+        alert.showAndWait();
+    }
+
     //// TODO: 9/12/2016 when game ends, open all players board for viewing.
     private void showBoard(GamePlayer i_Player){
         if(i_Player != m_CurrentPlayer && i_Player.getIsHuman()){
-            //// TODO: 9/11/2016 error msg
+            showInformationMsg("Board viewing:", "during a game can only view AI players boards.");
             return;
         }
 
