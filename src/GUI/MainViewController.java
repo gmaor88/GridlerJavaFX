@@ -513,7 +513,7 @@ public class MainViewController implements Initializable{
 
     private void showInformationMsg(String i_MsgHeather, String i_InfoMsg){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
+        alert.setTitle("Be advised!");
         alert.setHeaderText(i_MsgHeather);
         alert.setContentText(i_InfoMsg);
         alert.showAndWait();
