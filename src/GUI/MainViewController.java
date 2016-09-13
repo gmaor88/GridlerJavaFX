@@ -44,6 +44,7 @@ public class MainViewController implements Initializable{
     private ArrayList<ArrayList<Label>> m_VerticalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Button>> m_GameBoardButtons = new ArrayList<>();
     private Timer timer;
+    private boolean m_IsGameLoaded = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -162,7 +163,7 @@ public class MainViewController implements Initializable{
 
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         if(!m_CurrentPlayer.checkIfPlayerHasTurnLeft()){
-            //// TODO: 9/11/2016 victoryTieHandler 
+            victoryTieHandler();
         }
         
         if(!m_CurrentPlayer.getIsHuman()){
@@ -170,7 +171,7 @@ public class MainViewController implements Initializable{
             startTimer();
             m_CurrentPlayer.AiPlay();
             if(m_CurrentPlayer.getScore() == 100){
-                //// TODO: 9/11/2016 victoryHandler
+                victoryTieHandler();
             }
             else {
                 endTurnOnClick();
@@ -187,6 +188,9 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void loadGameOnClick() {
+        /*if(m_IsGameLoaded){
+            BoardGridPane.getChildren().clear();
+        }*/
         FileChooser fileChooser = new FileChooser();
         GameLoader gameLoader = new GameLoader();
         fileChooser.setTitle("Open XML File");
@@ -345,6 +349,8 @@ public class MainViewController implements Initializable{
         setBoardsOnPlayers();
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         startGameMenuItem.setDisable(true);
+        showStatisticsMenuItem.setDisable(false);
+        ShowMovesListMenuItem.setDisable(false);
         if(m_CurrentPlayer.getIsHuman()) {
             showBoard(m_CurrentPlayer);
             updatePlayerDataLabels();
@@ -354,11 +360,20 @@ public class MainViewController implements Initializable{
         else {
             m_CurrentPlayer.AiPlay();
             if(m_CurrentPlayer.getScore() == 100){
-                //// TODO: 9/11/2016 victoryHandler
+                victoryTieHandler();
             }
             else {
                 endTurnOnClick();
             }
+        }
+    }
+
+    private void victoryTieHandler() {
+        if(m_CurrentPlayer.getScore() == 100){
+            //victory
+        }
+        else if(!m_CurrentPlayer.checkIfPlayerHasMovesLeft()){
+            //tie
         }
     }
 
@@ -442,9 +457,24 @@ public class MainViewController implements Initializable{
         if (result.get() == ButtonType.OK){
             // Quit game - end player's game
             timer.cancel();
+            gameButtonsDisable();
+            runningGameButtonsDisable(false);
+            loadGameMenuItem.setDisable(false);
         } else {
             // do nothing...
         }
+    }
+
+    private void runningGameButtonsDisable(boolean i_Disable) {
+
+    }
+
+    private void gameButtonsDisable() {
+        makeMoveButton.setDisable(true);
+        endGameMenuItem.setDisable(true);
+        endTurnButton.setDisable(true);
+        UndoMenuItem.setDisable(true);
+        RedoMenuItem.setDisable(true);
     }
 
 
@@ -600,7 +630,7 @@ public class MainViewController implements Initializable{
         timerLabel.setText("");
     }
 
-    private void startTimer(){//// TODO: 9/12/2016 use timer.clear in override onClose
+    private void startTimer(){
         timer = new java.util.Timer();
 
         timer.schedule(new TimerTask() {

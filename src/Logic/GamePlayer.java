@@ -203,7 +203,7 @@ public class GamePlayer {
         return moveSet;
     }
 
-    public void AiPlay(){
+    public void AiPlay() throws ArrayIndexOutOfBoundsException{
         Random rand = new Random();
         int startRow,startCol, endRow, endCol;
         Square.eSquareSign sign;
@@ -219,16 +219,9 @@ public class GamePlayer {
             endRow = getRandomEndRowOrCol(startRow,m_GameBoard.getBoardHeight(),rand);
             startCol = rand.nextInt(m_GameBoard.getBoardWidth());
             endCol = getRandomEndRowOrCol(startCol,m_GameBoard.getBoardWidth(),rand);
-            try {
-                m_UndoList.addFirst(m_GameBoard.insert(startRow,startCol,endRow,endCol,sign,"Pc"));
-                m_RedoList.clear();
-                insertMoveToMoveList(startRow,startCol,endRow,endCol,sign,"Pc");
-            }
-            catch (Exception e){
-                System.out.println(e.getMessage());
-                return;
-            }
-
+            m_UndoList.addFirst(m_GameBoard.insert(startRow,startCol,endRow,endCol,sign,"Pc"));
+            m_RedoList.clear();
+            insertMoveToMoveList(startRow,startCol,endRow,endCol,sign,"Pc");
             if(m_Score < m_GameBoard.getBoardCompletionPercentage()){
                 m_Score = m_GameBoard.getBoardCompletionPercentage();
             }
