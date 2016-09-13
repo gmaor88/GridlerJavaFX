@@ -289,8 +289,24 @@ public class MainViewController implements Initializable{
 
         m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
         redoUndoMenuItemsAvailabilityModifier();
+        makeMoveHandler();
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         setForNextTurnOrMove();
+    }
+
+    private void makeMoveHandler() {
+        m_CurrentPlayer.updateBlocks();
+        scoreLabel.setText(((Integer)(int)m_CurrentPlayer.getScore()).toString());
+        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++) {
+            updateBlocks(m_HorizontalBlocksLabel.get(i), m_CurrentPlayer.getHorizontalSlice(i));
+        }
+
+        for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
+            updateBlocks(m_VerticalBlocksLabel.get(j), m_CurrentPlayer.getVerticalSlice(j));
+        }
+
+        //m_CurrentPlayer.incrementNumberOfMoves();
+        movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
     }
 
     private void setForNextTurnOrMove() {
@@ -299,6 +315,7 @@ public class MainViewController implements Initializable{
         }
 
         m_ButtonsSelected.clear();
+        commentTextArea.clear();
     }
 
     private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
@@ -433,6 +450,7 @@ public class MainViewController implements Initializable{
         showBoard(m_CurrentPlayer);
         redoUndoMenuItemsAvailabilityModifier();
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
     }
 
     @FXML
@@ -442,6 +460,7 @@ public class MainViewController implements Initializable{
         redoUndoMenuItemsAvailabilityModifier();
         //RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+        movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
     }
 
     @FXML
@@ -555,7 +574,7 @@ public class MainViewController implements Initializable{
         playersNameLabel.setText(m_CurrentPlayer.getName());
         scoreLabel.setText(((Integer)((int)m_CurrentPlayer.getScore())).toString());
         IDLabel.setText(m_CurrentPlayer.getId());
-        turnsLeftInGameLabel.setText(m_CurrentPlayer.getTurnNumber().toString());
+        turnsLeftInGameLabel.setText(((Integer)(m_CurrentPlayer.getTurnLimit() - m_CurrentPlayer.getTurnNumber())).toString());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
         startTimer();
     }

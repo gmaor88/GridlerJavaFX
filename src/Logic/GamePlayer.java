@@ -41,6 +41,8 @@ public class GamePlayer {
         return m_Timer;
     }
 
+    public void incrementNumberOfMoves(){m_NumOfMovesMade++;}
+
     public void setGameBoard(GameBoard i_GameBoard){
         m_GameBoard = new GameBoard(i_GameBoard);
     }
@@ -75,7 +77,10 @@ public class GamePlayer {
     }
 
     private void insertMoveToMoveList(MoveSet i_Move){
-        m_MoveList.addFirst(i_Move.toString());
+        if(i_Move.getPointsList().size() > 0) {
+            m_MoveList.addFirst(i_Move.toString());
+        }
+
         m_NumOfMovesMade++;
     }
 
