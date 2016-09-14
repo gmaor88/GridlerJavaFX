@@ -303,7 +303,7 @@ public class MainViewController implements Initializable{
             if(!m_IsGameTypeSinglePlayer) {
                 makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
             }
-            
+
             setForNextTurnOrMove();
         }
     }
@@ -363,6 +363,7 @@ public class MainViewController implements Initializable{
             updatePlayerDataLabels();
             RedoMenuItem.setDisable(true);
             UndoMenuItem.setDisable(true);
+            endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
         }
         else {
             m_CurrentPlayer.AiPlay();
@@ -640,6 +641,10 @@ public class MainViewController implements Initializable{
         IDLabel.setText(m_CurrentPlayer.getId());
         turnsLeftInGameLabel.setText(((Integer)(m_CurrentPlayer.getTurnLimit() - m_CurrentPlayer.getTurnNumber())).toString());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        if(m_IsGameTypeSinglePlayer){
+            turnsLeftInGameLabel.setText("\u221E");
+            movesLeftInTurnLabel.setText("\u221E");
+        }
         startTimer();
     }
 
