@@ -338,17 +338,17 @@ public class MainViewController implements Initializable{
         commentTextArea.clear();
     }
 
-    private void setBoardButtonStyle(Button value, Square.eSquareSign sign) {
+    private void setBoardButtonStyle(Button i_Button, Square.eSquareSign i_Sign) {
         String buttonId = "undefCell";
 
-        if(sign == Square.eSquareSign.BLACKED){
+        if(i_Sign == Square.eSquareSign.BLACKED){
             buttonId = "blackedCell";
         }
-        else if(sign == Square.eSquareSign.CLEARED){
+        else if(i_Sign == Square.eSquareSign.CLEARED){
             buttonId = "clearedCell";
         }
 
-        value.setId(buttonId);
+        i_Button.setId(buttonId);
     }
 
     private void redoUndoMenuItemsAvailabilityModifier(){
@@ -588,7 +588,7 @@ public class MainViewController implements Initializable{
             return;
         }
 
-        clearBoard();
+       // clearBoard();
         i_Player.updateBlocks();//// TODO: 9/11/2016 use in progarss thread
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             updateBlocks(m_HorizontalBlocksLabel.get(i), i_Player.getHorizontalSlice(i));
@@ -625,11 +625,11 @@ public class MainViewController implements Initializable{
         }
     }
 
-    private void clearSlice(ArrayList<Label> i_Labels) {
-        for (Label label: i_Labels){
+    private void clearSlice(ArrayList<Label> i_Labels) {// no longer needed!!
+       /* for (Label label: i_Labels){
             label.setId("incompleteBlock");
             //label.getStyleClass().clear();
-        }
+        }*/
     }
 
     private void updateBlocks(ArrayList<Label> i_Labels, ArrayList<Block> i_Blocks) {
@@ -638,6 +638,9 @@ public class MainViewController implements Initializable{
         for(Label label: i_Labels){
             if(i_Blocks.get(i).isMarked()){
                 label.setId("perfectBlock");
+            }
+            else{
+                label.setId("incompleteBlock");
             }
 
             i++;

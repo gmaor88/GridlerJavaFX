@@ -21,7 +21,7 @@ public class GameLoader {
         GameBoard board;
 
         //get basic data from xml and look for exceptions
-        if(!i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer") && !i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayers")){
+        if(!i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer") && !i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayer")){
             throw new GameLoadException("Invalid Format");
         }
 
@@ -77,7 +77,7 @@ public class GameLoader {
     }
 
     public ArrayList<GamePlayer> loadPlayer(GameDescriptor i_GameDescriptor) throws GameLoadException{
-        if(i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayers")){
+        if(i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayer")){
             return loadMultiPlayer(i_GameDescriptor);
         }
         else if(i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer")){
