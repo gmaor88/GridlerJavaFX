@@ -287,7 +287,7 @@ public class MainViewController implements Initializable{
 
         m_CurrentMove = new MoveSet(commentTextArea.getText());
         for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
-            m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);//// TODO: 9/6/2016 need to cheack first is row
+            m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);
             setBoardButtonStyle(entry.getValue(), sign);
         }
         if(m_CurrentMove.getPointsList().isEmpty()){

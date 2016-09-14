@@ -77,6 +77,26 @@ public class GameLoader {
     }
 
     public ArrayList<GamePlayer> loadPlayer(GameDescriptor i_GameDescriptor) throws GameLoadException{
+        if(i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayers")){
+            return loadMultiPlayer(i_GameDescriptor);
+        }
+        else if(i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer")){
+            return loadSinglePlayer();
+        }
+        else{
+            throw new GameLoadException("Invalid game type");
+        }
+    }
+
+    private ArrayList<GamePlayer> loadSinglePlayer() {
+        ArrayList<GamePlayer> players = new ArrayList<>();
+
+        players.add(new GamePlayer(true,"",""));
+
+        return players;
+    }
+
+    private ArrayList<GamePlayer> loadMultiPlayer(GameDescriptor i_GameDescriptor) throws GameLoadException{
         ArrayList<GamePlayer> players = new ArrayList<>();
         String playerId,playerName;
         Integer maxNumberOfMoves, numberOfPlayers;
@@ -112,6 +132,10 @@ public class GameLoader {
 
 
         return  players;
+    }
+
+    public boolean isGameTypeSinglePlayer(GameDescriptor i_GameDescriptor){
+        return i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer");
     }
 
     private int getNumberOfBlackSquare(int[] blocks) {
