@@ -146,16 +146,16 @@ public class GameBoard {
     public MoveSet insert(int i_StartRow, int i_StartColumn, int i_EndRow, int i_EndColumn, Square.eSquareSign i_Sign, String i_Comment) throws  ArrayIndexOutOfBoundsException{
         MoveSet moveset = new MoveSet(i_Comment);
 
-        if(i_EndRow > f_BoardHeight){
+        if(i_EndRow >= f_BoardHeight){
             throw new ArrayIndexOutOfBoundsException("End row is out of bounds");
         }
-        else if(i_EndColumn > f_BoardWidth){
+        else if(i_EndColumn >= f_BoardWidth){
             throw new ArrayIndexOutOfBoundsException("End column is out of bounds");
         }
 
-        for(int i = i_StartRow - 1; i < i_EndRow; i++){
-            for(int j = i_StartColumn - 1; j < i_EndColumn; j++){
-                moveset.AddNewPoint(i + 1, j + 1, m_Board[i][j].getCurrentSquareSign());// was without +1
+        for(int i = i_StartRow; i <= i_EndRow; i++){
+            for(int j = i_StartColumn; j <= i_EndColumn; j++){
+                moveset.AddNewPoint(i, j, m_Board[i][j].getCurrentSquareSign());// was without +1
                 m_Board[i][j].setCurrentSquareSign(i_Sign);
             }
         }

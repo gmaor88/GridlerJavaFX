@@ -389,7 +389,7 @@ public class MainViewController implements Initializable{
             contentText = m_CurrentPlayer.getName() + "has Won!";
             victoryOrTieFound = true;
         }
-        else if(!m_CurrentPlayer.checkIfPlayerHasMovesLeft()){ //tie
+        else if(!m_CurrentPlayer.checkIfPlayerHasTurnLeft()){ //tie
             headerText = "Game ended";
             contentText = "all moves were used!";
             victoryOrTieFound = true;
