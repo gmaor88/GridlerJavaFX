@@ -369,17 +369,26 @@ public class MainViewController implements Initializable{
     }
 
     private void victoryTieHandler() {
-        if(m_CurrentPlayer.getScore() == 100){
-            //victory
-            Alert alert = new Alert(Alert.AlertType.NONE);
-            alert.setHeaderText("Victory!!!");
-            alert.setContentText(m_CurrentPlayer.getName() + "has Won!");
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        String headerText = null, contentText = null;
+        Boolean victoryOrTieFound = false;
+
+        if(m_CurrentPlayer.getScore() == 100){ //victory
+            headerText = "Victory";
+            contentText = m_CurrentPlayer.getName() + "has Won!";
+            victoryOrTieFound = true;
         }
-        else if(!m_CurrentPlayer.checkIfPlayerHasMovesLeft()){
-            //tie
-            Alert alert = new Alert(Alert.AlertType.NONE);
-            alert.setHeaderText("Game ended");
-            alert.setContentText("all moves were used!");
+        else if(!m_CurrentPlayer.checkIfPlayerHasMovesLeft()){ //tie
+            headerText = "Game ended";
+            contentText = "all moves were used!";
+            victoryOrTieFound = true;
+        }
+
+        if(victoryOrTieFound){
+            alert.setHeaderText(headerText);
+            alert.setContentText(contentText);
+            alert.showAndWait();
+            enableDisableControlButtons(true);
         }
     }
 
