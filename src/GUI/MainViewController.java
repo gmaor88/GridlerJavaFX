@@ -44,7 +44,7 @@ public class MainViewController implements Initializable{
     private ArrayList<ArrayList<Label>> m_VerticalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Button>> m_GameBoardButtons = new ArrayList<>();
     private Timer timer;
-    private boolean m_IsGameLoaded = false;
+    private boolean m_IsGameTypeSinglePlayer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -202,6 +202,7 @@ public class MainViewController implements Initializable{
                 GameDescriptor gameDescriptor = JaxBGridlerClassGenerator.FromXmlFileToObject(file.getAbsolutePath());
                 m_LoadedBoard = gameLoader.loadBoard(gameDescriptor);
                 m_Players = gameLoader.loadPlayer(gameDescriptor);
+                m_IsGameTypeSinglePlayer = gameLoader.isGameTypeSinglePlayer(gameDescriptor);
                 startGameMenuItem.setDisable(false);
                 m_CurrentPlayerIndex = 0;
                 m_CurrentPlayer = null;
@@ -209,6 +210,7 @@ public class MainViewController implements Initializable{
                 buildBoard();
                 createPlayersBoardMenu();
                 enableDisableControlButtons(true);
+                endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
             } catch (GameLoadException ex) {
@@ -290,6 +292,7 @@ public class MainViewController implements Initializable{
             m_CurrentMove.AddNewPoint(entry.getKey().getKey(),entry.getKey().getValue(),sign);
             setBoardButtonStyle(entry.getValue(), sign);
         }
+
         if(m_CurrentMove.getPointsList().isEmpty()){
             showInformationMsg("Make move", "Please mark squares before pressing on Make move button");
         }
@@ -297,7 +300,10 @@ public class MainViewController implements Initializable{
             m_CurrentPlayer.preformPlayerMove(m_CurrentMove);
             redoUndoMenuItemsAvailabilityModifier();
             makeMoveHandler();
-            makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+            if(!m_IsGameTypeSinglePlayer) {
+                makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
+            }
+            
             setForNextTurnOrMove();
         }
     }
@@ -313,8 +319,9 @@ public class MainViewController implements Initializable{
             updateBlocks(m_VerticalBlocksLabel.get(j), m_CurrentPlayer.getVerticalSlice(j));
         }
 
-        //m_CurrentPlayer.incrementNumberOfMoves();
-        movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        if(!m_IsGameTypeSinglePlayer) {
+            movesLeftInTurnLabel.setText(((Integer) (2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        }
     }
 
     private void setForNextTurnOrMove() {
