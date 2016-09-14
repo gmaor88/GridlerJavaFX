@@ -48,12 +48,12 @@ public class MainViewController implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        intitPlayerDataLabel();
+        initPlayerDataLabel();
     }
 
     public void init(Stage i_Stage) {
         m_Stage = i_Stage;
-        m_Stage.setOnCloseRequest((event)->StopTimer());//// TODO: 9/12/2016 maybe set to deamon by separting thread 
+        m_Stage.setOnCloseRequest((event)->StopTimer());//// TODO: 9/12/2016 maybe set to deamon by separting thread
     }
 
     private void StopTimer() {
@@ -195,7 +195,7 @@ public class MainViewController implements Initializable{
         GameLoader gameLoader = new GameLoader();
         fileChooser.setTitle("Open XML File");
         startGameMenuItem.setDisable(true);
-        intitPlayerDataLabel();
+        initPlayerDataLabel();
         File file = fileChooser.showOpenDialog(m_Stage);
         if (file != null) {
             try {//// TODO: 9/6/2016 use task bar and threds
@@ -371,9 +371,15 @@ public class MainViewController implements Initializable{
     private void victoryTieHandler() {
         if(m_CurrentPlayer.getScore() == 100){
             //victory
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setHeaderText("Victory!!!");
+            alert.setContentText(m_CurrentPlayer.getName() + "has Won!");
         }
         else if(!m_CurrentPlayer.checkIfPlayerHasMovesLeft()){
             //tie
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setHeaderText("Game ended");
+            alert.setContentText("all moves were used!");
         }
     }
 
@@ -621,7 +627,7 @@ public class MainViewController implements Initializable{
         startTimer();
     }
 
-    private void intitPlayerDataLabel(){
+    private void initPlayerDataLabel(){
         playersNameLabel.setText("");
         scoreLabel.setText("");
         IDLabel.setText("");
