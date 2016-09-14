@@ -305,6 +305,9 @@ public class MainViewController implements Initializable{
             }
 
             setForNextTurnOrMove();
+            if(m_CurrentPlayer.getScore() == 100){
+                victoryTieHandler();
+            }
         }
     }
 
@@ -644,6 +647,7 @@ public class MainViewController implements Initializable{
         if(m_IsGameTypeSinglePlayer){
             turnsLeftInGameLabel.setText("\u221E");
             movesLeftInTurnLabel.setText("\u221E");
+            PlayersBoardsMenu.setDisable(m_IsGameTypeSinglePlayer);
         }
         startTimer();
     }
