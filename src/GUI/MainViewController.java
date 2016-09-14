@@ -57,7 +57,9 @@ public class MainViewController implements Initializable{
     }
 
     private void StopTimer() {
-        timer.cancel();
+        if(timer != null) {
+            timer.cancel();
+        }
     }
 
     @FXML
@@ -210,7 +212,7 @@ public class MainViewController implements Initializable{
                 buildBoard();
                 createPlayersBoardMenu();
                 enableDisableControlButtons(true);
-                endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
+                //endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
             } catch (GameLoadException ex) {
@@ -359,6 +361,8 @@ public class MainViewController implements Initializable{
         setBoardsOnPlayers();
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         startGameMenuItem.setDisable(true);
+        loadGameMenuItem.setDisable(true);
+        endGameMenuItem.setDisable(false);
         showStatisticsMenuItem.setDisable(false);
         ShowMovesListMenuItem.setDisable(false);
         if(m_CurrentPlayer.getIsHuman()) {
