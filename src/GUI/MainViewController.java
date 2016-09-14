@@ -515,6 +515,7 @@ public class MainViewController implements Initializable{
         redoUndoMenuItemsAvailabilityModifier();
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        scoreLabel.setText(((Integer)(int)m_CurrentPlayer.getScore()).toString());
     }
 
     @FXML
@@ -525,6 +526,7 @@ public class MainViewController implements Initializable{
         //RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
+        scoreLabel.setText(((Integer)(int)m_CurrentPlayer.getScore()).toString());
     }
 
     @FXML
