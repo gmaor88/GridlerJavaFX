@@ -123,6 +123,28 @@ public class MainViewController implements Initializable{
     private MenuItem player1BoardMenuItem;
 
     @FXML
+    private Menu NavigatorMenu;
+
+    @FXML
+    private void navigatToTheStartOnClick(){
+
+    }
+
+    @FXML
+    private void navigatToTheEndOnClick(){
+
+    }
+
+    @FXML
+    private void navigatBackOnClick(){
+
+    }
+    @FXML
+    private void navigatForwardOnClick(){
+
+    }
+
+    @FXML
     private void ShowMovesListMenuItemOnClick(){
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowMoveList.fxml"));
