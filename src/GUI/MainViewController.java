@@ -494,10 +494,12 @@ public class MainViewController implements Initializable{
 
     private void buildBoard() {
        BoardGridPane = new GridPane();
+        ScrollPane scrollPane = new ScrollPane(BoardGridPane);
        int j;
        //Button bSquare;
-       mainBoarderPane.setCenter(BoardGridPane);
+       mainBoarderPane.setCenter(scrollPane);
        BoardGridPane.setAlignment(Pos.CENTER);
+        BoardGridPane.setPadding(new Insets(40,20,20,40));
        for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
            m_GameBoardButtons.add(new ArrayList<Button>());
            m_HorizontalBlocksLabel.add(new ArrayList<>());
