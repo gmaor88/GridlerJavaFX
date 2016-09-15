@@ -121,9 +121,16 @@ public class MainViewController implements Initializable{
     private MenuItem ShowMovesListMenuItem;
     @FXML
     private MenuItem player1BoardMenuItem;
-
     @FXML
     private Menu NavigatorMenu;
+    @FXML
+    private MenuItem navigateToTheStartMenuItem;
+    @FXML
+    private MenuItem navigateToTheEndMenuItem;
+    @FXML
+    private MenuItem navigateBackMenuItem;
+    @FXML
+    private MenuItem navigateForwardMenuItem;
 
     @FXML
     private void navigateToTheStartOnClick(){
@@ -260,7 +267,6 @@ public class MainViewController implements Initializable{
                 enableDisableControlButtons(true);
                 showStatisticsMenuItem.setDisable(true);
                 ShowMovesListMenuItem.setDisable(true);
-                NavigatorMenu.setDisable(true);
                 //endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
@@ -491,8 +497,6 @@ public class MainViewController implements Initializable{
             runningGameButtonsDisable(false);
             openForWatchAllPlayersBoard();
             endGameMenuItem.setDisable(true);
-            loadGameMenuItem.setDisable(false);
-            NavigatorMenu.setDisable(false);
         }
     }
 
@@ -581,14 +585,18 @@ public class MainViewController implements Initializable{
             runningGameButtonsDisable(false);
             openForWatchAllPlayersBoard();
             endGameMenuItem.setDisable(true);
-            loadGameMenuItem.setDisable(false);
-            NavigatorMenu.setDisable(false);
         } else {// do nothing...
         }
     }
 
     private void runningGameButtonsDisable(boolean i_Disable) {
         m_IsGameInEndPhase = !i_Disable;
+        navigateToTheEndMenuItem.setDisable(i_Disable);
+        navigateToTheStartMenuItem.setDisable(i_Disable);
+        navigateBackMenuItem.setDisable(i_Disable);
+        navigateForwardMenuItem.setDisable(i_Disable);
+        NavigatorMenu.setDisable(i_Disable);
+        loadGameMenuItem.setDisable(i_Disable);
     }
 
     @FXML
