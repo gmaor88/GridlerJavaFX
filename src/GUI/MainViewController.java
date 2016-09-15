@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import jaxb.GameDescriptor;
@@ -129,15 +130,24 @@ public class MainViewController implements Initializable{
             ShowMoveListController controller = (ShowMoveListController) fxmlLoader.getController();
             ObservableList<String> items = FXCollections.observableList(m_CurrentPlayer.getMoveList());
             controller.getMoveListListView().setItems(items);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root,400,400));
-            stage.show();
+            setNewWindowModalStage(root, m_CurrentPlayer.getName() + "move list");
         }
         catch (IOException e){
             showErrorMsg("FXML loading error", "statistics fxml could not be loaded");
         }
-
     }
+
+    public void setNewWindowModalStage(Parent i_root, String i_header){
+        Stage stage = new Stage();
+
+        stage.setTitle(i_header);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.initOwner(m_Stage);
+        stage.setScene(new Scene(i_root, 400, 400));
+        stage.show();
+    }
+
     @FXML
     private void PlayersBoardsMenuOnClick(){
 
@@ -216,6 +226,8 @@ public class MainViewController implements Initializable{
                 buildBoard();
                 createPlayersBoardMenu();
                 enableDisableControlButtons(true);
+                showStatisticsMenuItem.setDisable(true);
+                ShowMovesListMenuItem.setDisable(true);
                 //endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
@@ -587,12 +599,10 @@ public class MainViewController implements Initializable{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowStatistics.fxml"));
             Parent root = fxmlLoader.load();
             ShowStatisticsController controller = (ShowStatisticsController) fxmlLoader.getController();
-            controller.getNumberOfMovesPlayedLable().setText(m_CurrentPlayer.getNumOfMovesMade().toString());
-            controller.getNumberOfRedoPlayedLable().setText(m_CurrentPlayer.getNumOfRedoMade().toString());
-            controller.getNumberOfUndoPlayedLable().setText(m_CurrentPlayer.getNumOfUndoMade().toString());
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root,400,400));
-            stage.show();
+            controller.getNumberOfMovesPlayedLabel().setText(m_CurrentPlayer.getNumOfMovesMade().toString());
+            controller.getNumberOfRedoPlayedLabel().setText(m_CurrentPlayer.getNumOfRedoMade().toString());
+            controller.getNumberOfUndoPlayedLabel().setText(m_CurrentPlayer.getNumOfUndoMade().toString());
+            setNewWindowModalStage(root, m_CurrentPlayer.getName() + "Statistics");
         }
         catch (IOException e){
             showErrorMsg("FXML loading error", "statistics fxml could not be loaded");

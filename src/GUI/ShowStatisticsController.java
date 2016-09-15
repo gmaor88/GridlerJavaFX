@@ -8,21 +8,21 @@ import javafx.scene.control.Label;
  */
 public class ShowStatisticsController {
     @FXML
-    private Label NumberOfMovesPlayedLable;
+    private Label NumberOfMovesPlayedLabel;
     @FXML
-    private Label NumberOfUndoPlayedLable;
+    private Label NumberOfUndoPlayedLabel;
     @FXML
-    private Label NumberOfRedoPlayedLable;
+    private Label NumberOfRedoPlayedLabel;
 
-    public Label getNumberOfMovesPlayedLable() {
-        return NumberOfMovesPlayedLable;
+    public Label getNumberOfMovesPlayedLabel() {
+        return NumberOfMovesPlayedLabel;
     }
 
-    public Label getNumberOfRedoPlayedLable() {
-        return NumberOfRedoPlayedLable;
+    public Label getNumberOfRedoPlayedLabel() {
+    return NumberOfRedoPlayedLabel;
     }
 
-    public Label getNumberOfUndoPlayedLable() {
-        return NumberOfUndoPlayedLable;
+    public Label getNumberOfUndoPlayedLabel() {
+        return NumberOfUndoPlayedLabel;
     }
 }
