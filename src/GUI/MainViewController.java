@@ -126,21 +126,21 @@ public class MainViewController implements Initializable{
     private Menu NavigatorMenu;
 
     @FXML
-    private void navigatToTheStartOnClick(){
+    private void navigateToTheStartOnClick(){
 
     }
 
     @FXML
-    private void navigatToTheEndOnClick(){
+    private void navigateToTheEndOnClick(){
 
     }
 
     @FXML
-    private void navigatBackOnClick(){
+    private void navigateBackOnClick(){
 
     }
     @FXML
-    private void navigatForwardOnClick(){
+    private void navigateForwardOnClick(){
 
     }
 
