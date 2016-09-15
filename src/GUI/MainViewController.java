@@ -177,6 +177,8 @@ public class MainViewController implements Initializable{
 
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         if(!m_CurrentPlayer.checkIfPlayerHasTurnLeft()){
+            updatePlayerDataLabels();
+            showBoard(m_CurrentPlayer);
             victoryTieHandler();
             return;
         }
