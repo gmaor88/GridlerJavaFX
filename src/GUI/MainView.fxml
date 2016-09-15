@@ -87,7 +87,7 @@
         </MenuBar>
     </top>
     <left>
-      <ScrollPane prefHeight="434.0" prefWidth="262.0" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="ALWAYS" prefHeight="434.0" prefWidth="262.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
          <content>
               <GridPane>
                   <columnConstraints>

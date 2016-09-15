@@ -43,6 +43,7 @@ public class MainViewController implements Initializable{
     private ArrayList<ArrayList<Label>> m_HorizontalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Label>> m_VerticalBlocksLabel = new ArrayList<>();
     private ArrayList<ArrayList<Button>> m_GameBoardButtons = new ArrayList<>();
+    private ArrayList<MenuItem> m_PlayersBoardsMenuItems = new ArrayList<>();
     private Timer timer;
     private boolean m_IsGameTypeSinglePlayer;
 
@@ -216,16 +217,17 @@ public class MainViewController implements Initializable{
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
             } catch (GameLoadException ex) {
-                showErrorMsg("FIle loading error", ex.getMessage());
+                showErrorMsg("FIle loading error", ex.getErorMsg());
             }
         }
     }
 
     private void createPlayersBoardMenu() {
-        int i = 1;
+        int i = 0;
+        initPlayersBoardMenu();
 
         for (GamePlayer player : m_Players){
-            if(i == 1){
+            if(i == 0){
                 initPlayer1BoardMenuItem(player);
             }
             else{
@@ -234,24 +236,46 @@ public class MainViewController implements Initializable{
                 player1BoardMenuItem.setId(player.getId());//Test
                 playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
                 PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
-                if(player.getIsHuman()){
-                    playerBoardMenuItem.setDisable(true);
-                }
+                m_PlayersBoardsMenuItems.add(i,playerBoardMenuItem);
+                playerBoardMenuItem.setDisable(true);
             }
 
             i++;
         }
 
         PlayersBoardsMenu.setDisable(false);
+        openForWatchPcPlayersBoard();
+    }
+
+    private void initPlayersBoardMenu() {
+        m_PlayersBoardsMenuItems.clear();
+        player1BoardMenuItem.setText("");
+    }
+
+    private void openForWatchPcPlayersBoard(){
+        int i=0;
+
+        for (GamePlayer player : m_Players) {
+            if (!player.getIsHuman()) {
+                m_PlayersBoardsMenuItems.get(i).setDisable(false);
+            }
+
+            i++;
+        }
+    }
+
+    private void openForWatchAllPlayersBoard(){
+        for (MenuItem playerBoard : m_PlayersBoardsMenuItems) {
+            playerBoard.setDisable(false);
+        }
     }
 
     private void initPlayer1BoardMenuItem(GamePlayer i_Player){
         player1BoardMenuItem.setText(i_Player.getName());
         player1BoardMenuItem.setId(i_Player.getId());//Test
         player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_Player));
-        if(i_Player.getIsHuman()){
-            player1BoardMenuItem.setDisable(true);
-        }
+        player1BoardMenuItem.setDisable(true);
+        m_PlayersBoardsMenuItems.add(player1BoardMenuItem);
     }
 
     private void playerBoardMenuItemClicked(GamePlayer i_Player) {
@@ -384,7 +408,7 @@ public class MainViewController implements Initializable{
     }
 
     private void victoryTieHandler() {
-        Alert alert = new Alert(Alert.AlertType.NONE);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         String headerText = null, contentText = null;
         Boolean victoryOrTieFound = false;
 
@@ -402,7 +426,7 @@ public class MainViewController implements Initializable{
         if(victoryOrTieFound){
             alert.setHeaderText(headerText);
             alert.setContentText(contentText);
-            alert.showAndWait();
+            alert.show();
             enableDisableControlButtons(true);
         }
     }
@@ -484,14 +508,12 @@ public class MainViewController implements Initializable{
         alert.setContentText("Are you sure you want to quit?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            // Quit game - end player's game
+        if (result.get() == ButtonType.OK){ // Quit game - end player's game
             timer.cancel();
             gameButtonsDisable();
             runningGameButtonsDisable(false);
             loadGameMenuItem.setDisable(false);
-        } else {
-            // do nothing...
+        } else {// do nothing...
         }
     }
 
@@ -581,7 +603,6 @@ public class MainViewController implements Initializable{
         alert.showAndWait();
     }
 
-    //// TODO: 9/12/2016 when game ends, open all players board for viewing.
     private void showBoard(GamePlayer i_Player){
         if(i_Player != m_CurrentPlayer && i_Player.getIsHuman()){
             showInformationMsg("Board viewing:", "during a game can only view AI players boards.");
@@ -610,6 +631,7 @@ public class MainViewController implements Initializable{
         endTurnButton.setDisable(i_Disable);
         RedoMenuItem.setDisable(i_Disable);
         UndoMenuItem.setDisable(i_Disable);
+        openForWatchAllPlayersBoard();
     }
 
     private void clearBoard() {

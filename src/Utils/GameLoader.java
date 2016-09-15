@@ -22,7 +22,7 @@ public class GameLoader {
 
         //get basic data from xml and look for exceptions
         if(!i_GameDescriptor.getGameType().equalsIgnoreCase("singleplayer") && !i_GameDescriptor.getGameType().equalsIgnoreCase("multiplayer")){
-            throw new GameLoadException("Invalid Format");
+            throw new GameLoadException("Invalid game type format");
         }
 
         columns = i_GameDescriptor.getBoard().getDefinition().getColumns().intValue();
