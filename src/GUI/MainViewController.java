@@ -236,10 +236,10 @@ public class MainViewController implements Initializable{
             //else{
                 final MenuItem playerBoardMenuItem = new MenuItem();
                 playerBoardMenuItem.setText(player.getName());
-                player1BoardMenuItem.setId(player.getId());//Test
+                playerBoardMenuItem.setId(player.getId());//Test
                 playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
                 PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
-                m_PlayersBoardsMenuItems.add(i,playerBoardMenuItem);
+                m_PlayersBoardsMenuItems.add(i, playerBoardMenuItem);
                 playerBoardMenuItem.setDisable(true);
            // }
 
@@ -253,7 +253,7 @@ public class MainViewController implements Initializable{
     private void initPlayersBoardMenu() {
         m_PlayersBoardsMenuItems.clear();
         PlayersBoardsMenu.getItems().clear();
-        player1BoardMenuItem.setText("");
+        //player1BoardMenuItem.setText("");
     }
 
     private void openForWatchPcPlayersBoard(){
@@ -274,13 +274,13 @@ public class MainViewController implements Initializable{
         }
     }
 
-    private void initPlayer1BoardMenuItem(GamePlayer i_Player){
-        player1BoardMenuItem.setText(i_Player.getName());
-        player1BoardMenuItem.setId(i_Player.getId());//Test
-        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_Player));
-        player1BoardMenuItem.setDisable(true);
-        m_PlayersBoardsMenuItems.add(player1BoardMenuItem);
-    }
+//    private void initPlayer1BoardMenuItem(GamePlayer i_Player){
+//        player1BoardMenuItem.setText(i_Player.getName());
+//        player1BoardMenuItem.setId(i_Player.getId());//Test
+//        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_Player));
+//        player1BoardMenuItem.setDisable(true);
+//        m_PlayersBoardsMenuItems.add(player1BoardMenuItem);
+//    }
 
     private void playerBoardMenuItemClicked(GamePlayer i_Player) {
         if(m_IsGameInEndPhase){
