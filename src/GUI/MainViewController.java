@@ -46,6 +46,7 @@ public class MainViewController implements Initializable{
     private ArrayList<MenuItem> m_PlayersBoardsMenuItems = new ArrayList<>();
     private Timer timer;
     private boolean m_IsGameTypeSinglePlayer;
+    private boolean m_IsGameInEndPhase;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -167,6 +168,7 @@ public class MainViewController implements Initializable{
         m_CurrentPlayer = m_Players.get(m_CurrentPlayerIndex);
         if(!m_CurrentPlayer.checkIfPlayerHasTurnLeft()){
             victoryTieHandler();
+            return;
         }
         
         if(!m_CurrentPlayer.getIsHuman()){
@@ -198,6 +200,7 @@ public class MainViewController implements Initializable{
         GameLoader gameLoader = new GameLoader();
         fileChooser.setTitle("Open XML File");
         startGameMenuItem.setDisable(true);
+        runningGameButtonsDisable(true);
         initPlayerDataLabel();
         File file = fileChooser.showOpenDialog(m_Stage);
         if (file != null) {
@@ -227,10 +230,10 @@ public class MainViewController implements Initializable{
         initPlayersBoardMenu();
 
         for (GamePlayer player : m_Players){
-            if(i == 0){
-                initPlayer1BoardMenuItem(player);
-            }
-            else{
+            //if(i == 0){
+            //    initPlayer1BoardMenuItem(player);
+            //}
+            //else{
                 final MenuItem playerBoardMenuItem = new MenuItem();
                 playerBoardMenuItem.setText(player.getName());
                 player1BoardMenuItem.setId(player.getId());//Test
@@ -238,7 +241,7 @@ public class MainViewController implements Initializable{
                 PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
                 m_PlayersBoardsMenuItems.add(i,playerBoardMenuItem);
                 playerBoardMenuItem.setDisable(true);
-            }
+           // }
 
             i++;
         }
@@ -249,6 +252,7 @@ public class MainViewController implements Initializable{
 
     private void initPlayersBoardMenu() {
         m_PlayersBoardsMenuItems.clear();
+        PlayersBoardsMenu.getItems().clear();
         player1BoardMenuItem.setText("");
     }
 
@@ -279,6 +283,15 @@ public class MainViewController implements Initializable{
     }
 
     private void playerBoardMenuItemClicked(GamePlayer i_Player) {
+        if(m_IsGameInEndPhase){
+            m_CurrentPlayer = i_Player;
+            showBoard(m_CurrentPlayer);
+            enableDisableControlButtons(true);
+            updatePlayerDataLabels();
+            timer.cancel();
+            return;
+        }
+
         showBoard(i_Player);
         if (!i_Player.getIsHuman()) {
             for (MenuItem item : PlayersBoardsMenu.getItems()) {
@@ -397,6 +410,7 @@ public class MainViewController implements Initializable{
             endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
         }
         else {
+            startTimer();
             m_CurrentPlayer.AiPlay();
             if(m_CurrentPlayer.getScore() == 100){
                 victoryTieHandler();
@@ -427,7 +441,12 @@ public class MainViewController implements Initializable{
             alert.setHeaderText(headerText);
             alert.setContentText(contentText);
             alert.show();
+            timer.cancel();
             enableDisableControlButtons(true);
+            runningGameButtonsDisable(false);
+            openForWatchAllPlayersBoard();
+            endGameMenuItem.setDisable(true);
+            loadGameMenuItem.setDisable(false);
         }
     }
 
@@ -510,25 +529,18 @@ public class MainViewController implements Initializable{
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){ // Quit game - end player's game
             timer.cancel();
-            gameButtonsDisable();
+            enableDisableControlButtons(true);
             runningGameButtonsDisable(false);
+            openForWatchAllPlayersBoard();
+            endGameMenuItem.setDisable(true);
             loadGameMenuItem.setDisable(false);
         } else {// do nothing...
         }
     }
 
     private void runningGameButtonsDisable(boolean i_Disable) {
-
+        m_IsGameInEndPhase = !i_Disable;
     }
-
-    private void gameButtonsDisable() {
-        makeMoveButton.setDisable(true);
-        endGameMenuItem.setDisable(true);
-        endTurnButton.setDisable(true);
-        UndoMenuItem.setDisable(true);
-        RedoMenuItem.setDisable(true);
-    }
-
 
     @FXML
     public void undoMoveOnClick() {
@@ -631,7 +643,6 @@ public class MainViewController implements Initializable{
         endTurnButton.setDisable(i_Disable);
         RedoMenuItem.setDisable(i_Disable);
         UndoMenuItem.setDisable(i_Disable);
-        openForWatchAllPlayersBoard();
     }
 
     private void clearBoard() {
@@ -648,10 +659,10 @@ public class MainViewController implements Initializable{
     }
 
     private void clearSlice(ArrayList<Label> i_Labels) {// no longer needed!!
-       /* for (Label label: i_Labels){
+        for (Label label: i_Labels){
             label.setId("incompleteBlock");
             //label.getStyleClass().clear();
-        }*/
+        }
     }
 
     private void updateBlocks(ArrayList<Label> i_Labels, ArrayList<Block> i_Blocks) {
