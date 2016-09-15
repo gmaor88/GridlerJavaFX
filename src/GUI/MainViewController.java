@@ -127,21 +127,29 @@ public class MainViewController implements Initializable{
 
     @FXML
     private void navigateToTheStartOnClick(){
-
+        m_CurrentPlayer.moveToStart();
+        showBoard(m_CurrentPlayer);
+        enableDisableControlButtons(true);
     }
 
     @FXML
     private void navigateToTheEndOnClick(){
-
+        m_CurrentPlayer.moveToEnd();
+        showBoard(m_CurrentPlayer);
+        enableDisableControlButtons(true);
     }
 
     @FXML
     private void navigateBackOnClick(){
-
+        m_CurrentPlayer.backwards();
+        showBoard(m_CurrentPlayer);
+        enableDisableControlButtons(true);
     }
     @FXML
     private void navigateForwardOnClick(){
-
+        m_CurrentPlayer.forwards();
+        showBoard(m_CurrentPlayer);
+        enableDisableControlButtons(true);
     }
 
     @FXML
@@ -252,6 +260,7 @@ public class MainViewController implements Initializable{
                 enableDisableControlButtons(true);
                 showStatisticsMenuItem.setDisable(true);
                 ShowMovesListMenuItem.setDisable(true);
+                NavigatorMenu.setDisable(true);
                 //endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
             } catch (JAXBException e) {//need to change!
                 showErrorMsg("FIle loading error", "Illegal file");
@@ -483,6 +492,7 @@ public class MainViewController implements Initializable{
             openForWatchAllPlayersBoard();
             endGameMenuItem.setDisable(true);
             loadGameMenuItem.setDisable(false);
+            NavigatorMenu.setDisable(false);
         }
     }
 
@@ -572,6 +582,7 @@ public class MainViewController implements Initializable{
             openForWatchAllPlayersBoard();
             endGameMenuItem.setDisable(true);
             loadGameMenuItem.setDisable(false);
+            NavigatorMenu.setDisable(false);
         } else {// do nothing...
         }
     }
