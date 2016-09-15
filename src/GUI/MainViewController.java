@@ -130,7 +130,7 @@ public class MainViewController implements Initializable{
             ShowMoveListController controller = (ShowMoveListController) fxmlLoader.getController();
             ObservableList<String> items = FXCollections.observableList(m_CurrentPlayer.getMoveList());
             controller.getMoveListListView().setItems(items);
-            setNewWindowModalStage(root, m_CurrentPlayer.getName() + "move list");
+            setNewWindowModalStage(root, m_CurrentPlayer.getName() + "  Move list");
         }
         catch (IOException e){
             showErrorMsg("FXML loading error", "statistics fxml could not be loaded");
@@ -599,10 +599,10 @@ public class MainViewController implements Initializable{
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowStatistics.fxml"));
             Parent root = fxmlLoader.load();
             ShowStatisticsController controller = (ShowStatisticsController) fxmlLoader.getController();
-            controller.getNumberOfMovesPlayedLabel().setText(m_CurrentPlayer.getNumOfMovesMade().toString());
+            controller.getNumberOfMovesPlayedLabel().setText(m_CurrentPlayer.getTotalMovesMadeInGame().toString());
             controller.getNumberOfRedoPlayedLabel().setText(m_CurrentPlayer.getNumOfRedoMade().toString());
             controller.getNumberOfUndoPlayedLabel().setText(m_CurrentPlayer.getNumOfUndoMade().toString());
-            setNewWindowModalStage(root, m_CurrentPlayer.getName() + "Statistics");
+            setNewWindowModalStage(root, m_CurrentPlayer.getName() + " Statistics");
         }
         catch (IOException e){
             showErrorMsg("FXML loading error", "statistics fxml could not be loaded");

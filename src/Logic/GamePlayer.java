@@ -5,7 +5,6 @@ package Logic;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Timer;
 
 /**
  * Created by Maor Gershkovitch on 8/8/2016.
@@ -24,6 +23,7 @@ public class GamePlayer {
     private Integer m_NumOfMovesMade = 0;
     private Integer m_NumOfUndoMade = 0;
     private Integer m_NumOfRedoMade = 0;
+    private Integer m_TotalMovesMadeInGame = 0;
     private double m_Score = 0;
     private long m_Timer = 0;
 
@@ -41,7 +41,10 @@ public class GamePlayer {
         return m_Timer;
     }
 
-    public void incrementNumberOfMoves(){m_NumOfMovesMade++;}
+    public void incrementNumberOfMoves(){
+        m_NumOfMovesMade++;
+        m_TotalMovesMadeInGame++;
+    }
 
     public void setGameBoard(GameBoard i_GameBoard){
         m_GameBoard = new GameBoard(i_GameBoard);
@@ -74,6 +77,7 @@ public class GamePlayer {
         m_MoveList.addFirst(i_StartRow + "," + i_StartColumn + " " + i_EndRow + "," +
                 i_EndColumn + " " + i_Sign + " " + hasComment(i_Comment));
         m_NumOfMovesMade++;
+        m_TotalMovesMadeInGame++;
     }
 
     private void insertMoveToMoveList(MoveSet i_Move){
@@ -82,6 +86,7 @@ public class GamePlayer {
         }
 
         m_NumOfMovesMade++;
+        m_TotalMovesMadeInGame++;
     }
 
     private String hasComment(String i_Comment){
@@ -147,6 +152,7 @@ public class GamePlayer {
     public void incrementNumOfUndos(){
         if(m_NumOfMovesMade > 0){
             m_NumOfMovesMade--;
+            m_TotalMovesMadeInGame--;
         }
 
         m_NumOfUndoMade++;
@@ -260,5 +266,9 @@ public class GamePlayer {
 
     public void updateBlocks(){
         m_GameBoard.updateBlocks();
+    }
+
+    public Integer getTotalMovesMadeInGame() {
+        return m_TotalMovesMadeInGame;
     }
 }
