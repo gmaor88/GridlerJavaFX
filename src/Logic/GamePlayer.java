@@ -209,6 +209,32 @@ public class GamePlayer {
         return moveSet;
     }
 
+    public void backwards(){
+        if(!m_UndoList.isEmpty()) {
+            m_RedoList.addFirst(undoRedoHandler(m_UndoList));
+            m_Score = m_GameBoard.getBoardCompletionPercentage();
+        }
+    }
+
+    public void forwards(){
+        if(!m_RedoList.isEmpty()) {
+            m_UndoList.addFirst(undoRedoHandler(m_RedoList));
+            m_Score = m_GameBoard.getBoardCompletionPercentage();
+        }
+    }
+
+    public void moveToStart(){
+        while (!m_UndoList.isEmpty()){
+            backwards();
+        }
+    }
+
+    public void moveToEnd(){
+        while (!m_RedoList.isEmpty()){
+            forwards();
+        }
+    }
+
     public void AiPlay() throws ArrayIndexOutOfBoundsException{
         Random rand = new Random();
         int startRow,startCol, endRow, endCol;
