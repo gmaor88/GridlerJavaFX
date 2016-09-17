@@ -1,6 +1,18 @@
-.background{
-    -fx-background-color: cornflowerblue;
-}
+/*.border-pane-center > .viewport{*/
+    /*-fx-background-color: cornsilk;*/
+/*}*/
+
+/*.scroll-pane > .viewport {*/
+    /*-fx-background-color: cornsilk;*/
+/*}*/
+
+/*.grid-pane > .viewport{*/
+    /*-fx-background-color: cornsilk;*/
+/*}*/
+
+/*.background{*/
+    /*-fx-background-color: cornsilk;*/
+/*}*/
 
 .buttonSelected {
     -fx-border-color: #3da812;

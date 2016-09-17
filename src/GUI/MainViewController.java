@@ -114,9 +114,9 @@ public class MainViewController implements Initializable{
     @FXML
     private RadioMenuItem defaultSkinRadioMenuItem;
     @FXML
-    private RadioMenuItem XSkinRadioMenuItem;
+    private RadioMenuItem sunsetSkinRadioMenuItem;
     @FXML
-    private RadioMenuItem YSkinRadioMenuItem;
+    private RadioMenuItem oceanSkinRadioMenuItem;
     @FXML
     private MenuItem ShowMovesListMenuItem;
     @FXML
@@ -191,15 +191,21 @@ public class MainViewController implements Initializable{
     }
     @FXML
     private void defaultSkinRadioMenuItemOnClick(){
-
+        Scene scene = m_Stage.getScene();
+        scene.getStylesheets().clear();
+        scene.getStylesheets().addAll(getClass().getResource("defaultSkin.css").toExternalForm());
     }
     @FXML
-    private void XSkinRadioMenuItemOnClick(){
-
+    private void sunsetSkinRadioMenuItemOnClick(){
+        Scene scene = m_Stage.getScene();
+        scene.getStylesheets().clear();
+        scene.getStylesheets().addAll(getClass().getResource("SunsetSkin.css").toExternalForm());
     }
     @FXML
-    private void YSkinRadioMenuItemOnClick(){
-
+    private void oceanSkinRadioMenuItemOnClick(){
+        Scene scene = m_Stage.getScene();
+        scene.getStylesheets().clear();
+        scene.getStylesheets().addAll(getClass().getResource("OceanSkin.css").toExternalForm());
     }
     @FXML
     public void endTurnOnClick() {
@@ -533,7 +539,7 @@ public class MainViewController implements Initializable{
                BoardGridPane.setMargin(bSquare, new Insets(0,0,2,1));
            }
 
-           for(Block block:m_LoadedBoard.getHorizontalSlice(i)){//was i -1
+           for(Block block : m_LoadedBoard.getHorizontalSlice(i)){//was i -1
                addBlockLabel(BoardGridPane, j, i, block.toString(), m_HorizontalBlocksLabel.get(i));
                j++;
            }
@@ -542,7 +548,7 @@ public class MainViewController implements Initializable{
        for(int i = 0; i < m_LoadedBoard.getBoardWidth(); i++){
            j = m_LoadedBoard.getBoardHeight();
            m_VerticalBlocksLabel.add(new ArrayList<>());
-           for(Block block:m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
+           for(Block block : m_LoadedBoard.getVerticalSlice(i)) { //was i - 1
                addBlockLabel(BoardGridPane, i , j, block.toString(), m_VerticalBlocksLabel.get(i));
                j++;
            }
@@ -566,7 +572,7 @@ public class MainViewController implements Initializable{
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
         lBlock.setId("incompleteBlock");
-        lBlock.getStyleClass().add("boardBlockLabel");
+        //lBlock.getStyleClass().add("boardBlockLabel");
         i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
         i_GridPane.setMargin(lBlock, new Insets(0,0,0,5));

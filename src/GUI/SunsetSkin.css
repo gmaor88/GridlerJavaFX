@@ -1,0 +1,69 @@
+.border-pane-center > .viewport{
+    -fx-background-color: coral;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: coral;
+}
+
+.grid-pane > .viewport{
+    -fx-background-color: coral;
+}
+
+.background{
+    -fx-background-color: coral;
+}
+
+.buttonSelected {
+    -fx-border-color: #c62715;
+    -fx-border-width: 2;
+}
+
+.boardButton{
+    -fx-padding: 2;
+    -fx-min-height: 25;
+    -fx-min-width: 25;
+    -fx-background-color: #525D76;
+}
+
+.button{
+    -fx-font: 12px Centaur;
+    -fx-background-color: #3da812;
+}
+
+.boardBlockLabel{
+    -fx-text-fill: #8f55c6;
+    -fx-font-size: 14;
+}
+
+.label{
+    -fx-text-fill: indigo;
+    -fx-font-size: 12;
+    -fx-font: 12px Centaur;
+}
+
+.radio-button{
+    -fx-text-fill: indigo;
+    -fx-font: 12px Centaur;
+}
+
+#perfectBlock {
+    -fx-text-fill: #0d8bc6;
+    -fx-font-weight: bold;
+}
+
+#incompleteBlock {
+    -fx-text-fill: cyan;
+}
+
+#undefCell {
+    -fx-background-color: yellow;
+}
+
+#clearedCell {
+    -fx-background-color: darkcyan;
+}
+
+#blackedCell {
+    -fx-background-color: darkblue;
+}
