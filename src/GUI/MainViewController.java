@@ -48,6 +48,13 @@ public class MainViewController implements Initializable{
     private Timer timer;
     private boolean m_IsGameTypeSinglePlayer;
     private boolean m_IsGameInEndPhase;
+    private final String k_ButtonSelectedStyleClass = "buttonSelected";
+    private final String k_UndefCellStyleId = "undefCell";
+    private final String k_BlackedCellStyleId = "blackedCell";
+    private final String k_ClearedCellStyleId = "clearedCell";
+    private final String k_BoardButtonStyleClass = "boardButton";
+    private final String k_IncompleteBlockStyleId= "incompleteBlock";
+    private final String k_PerfectBlockStyleId = "perfectBlock";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -425,7 +432,7 @@ public class MainViewController implements Initializable{
 
     private void setForNextTurnOrMove() {
         for(Map.Entry<Pair<Integer,Integer>, Button> entry: m_ButtonsSelected.entrySet()){
-            entry.getValue().getStyleClass().remove("buttonSelected");
+            entry.getValue().getStyleClass().remove(k_ButtonSelectedStyleClass);
         }
 
         m_ButtonsSelected.clear();
@@ -433,13 +440,13 @@ public class MainViewController implements Initializable{
     }
 
     private void setBoardButtonStyle(Button i_Button, Square.eSquareSign i_Sign) {
-        String buttonId = "undefCell";
+        String buttonId = k_UndefCellStyleId;
 
         if(i_Sign == Square.eSquareSign.BLACKED){
-            buttonId = "blackedCell";
+            buttonId = k_BlackedCellStyleId;
         }
         else if(i_Sign == Square.eSquareSign.CLEARED){
-            buttonId = "clearedCell";
+            buttonId = k_ClearedCellStyleId;
         }
 
         i_Button.setId(buttonId);
@@ -532,8 +539,8 @@ public class MainViewController implements Initializable{
                //bSquare.setMinHeight(25);
                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                bSquare.setAlignment(Pos.CENTER);
-               bSquare.setId("undefCell");
-               bSquare.getStyleClass().add("boardButton");
+               bSquare.setId(k_UndefCellStyleId);
+               bSquare.getStyleClass().add(k_BoardButtonStyleClass);
                m_GameBoardButtons.get(i).add(bSquare);
                BoardGridPane.add(bSquare, j, i);
                BoardGridPane.setMargin(bSquare, new Insets(0,0,2,1));
@@ -560,18 +567,18 @@ public class MainViewController implements Initializable{
 
          if(!m_ButtonsSelected.containsKey(pair)){
              m_ButtonsSelected.put(pair,i_Button);
-             i_Button.getStyleClass().add("buttonSelected");
+             i_Button.getStyleClass().add(k_ButtonSelectedStyleClass);
          }
          else {
              m_ButtonsSelected.remove(pair);
-             i_Button.getStyleClass().remove("buttonSelected");
+             i_Button.getStyleClass().remove(k_ButtonSelectedStyleClass);
          }
     }
 
     private void addBlockLabel(GridPane i_GridPane, int i_ColumnIndex, int i_RowIndex, String i_blockSize, ArrayList<Label> i_SliceLabels) {
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
-        lBlock.setId("incompleteBlock");
+        lBlock.setId(k_IncompleteBlockStyleId);
         //lBlock.getStyleClass().add("boardBlockLabel");
         i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
@@ -710,7 +717,7 @@ public class MainViewController implements Initializable{
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             clearSlice(m_HorizontalBlocksLabel.get(i));
             for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
-                m_GameBoardButtons.get(i).get(j).setId("undefCell");
+                m_GameBoardButtons.get(i).get(j).setId(k_UndefCellStyleId);
             }
         }
 
@@ -721,7 +728,7 @@ public class MainViewController implements Initializable{
 
     private void clearSlice(ArrayList<Label> i_Labels) {// no longer needed!!
         for (Label label: i_Labels){
-            label.setId("incompleteBlock");
+            label.setId(k_IncompleteBlockStyleId);
             //label.getStyleClass().clear();
         }
     }
@@ -731,10 +738,10 @@ public class MainViewController implements Initializable{
 
         for(Label label: i_Labels){
             if(i_Blocks.get(i).isMarked()){
-                label.setId("perfectBlock");
+                label.setId(k_PerfectBlockStyleId);
             }
             else{
-                label.setId("incompleteBlock");
+                label.setId(k_IncompleteBlockStyleId);
             }
 
             i++;
