@@ -36,7 +36,7 @@
                         <KeyCodeCombination alt="UP" code="F2" control="UP" meta="UP" shift="UP" shortcut="ANY" />
                      </accelerator>
                   </MenuItem>
-                        <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="endGame">
+                        <MenuItem fx:id="endGameMenuItem" disable="true" mnemonicParsing="false" onAction="#endGameOnClick" text="End Game">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="ESCAPE" control="UP" meta="UP" shift="UP" shortcut="ANY" />
                      </accelerator>

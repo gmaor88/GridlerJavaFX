@@ -263,6 +263,7 @@ public class MainViewController implements Initializable{
         fileChooser.setTitle("Open XML File");
         startGameMenuItem.setDisable(true);
         runningGameButtonsDisable(true);
+        loadGameMenuItem.setDisable(false);
         initPlayerDataLabel();
         File file = fileChooser.showOpenDialog(m_Stage);
         if (file != null) {
@@ -523,7 +524,6 @@ public class MainViewController implements Initializable{
        BoardGridPane = new GridPane();
         ScrollPane scrollPane = new ScrollPane(BoardGridPane);
        int j;
-       //Button bSquare;
        mainBoarderPane.setCenter(scrollPane);
        BoardGridPane.setAlignment(Pos.CENTER);
         BoardGridPane.setPadding(new Insets(40,20,20,40));
@@ -535,8 +535,6 @@ public class MainViewController implements Initializable{
                final int row = i;
                final Button bSquare = new Button();
                bSquare.setDisable(true);
-               //bSquare.setMinWidth(25);
-               //bSquare.setMinHeight(25);
                bSquare.setOnAction((event)->buttonClicked(row, column, bSquare));
                bSquare.setAlignment(Pos.CENTER);
                bSquare.setId(k_UndefCellStyleId);
@@ -579,7 +577,6 @@ public class MainViewController implements Initializable{
         Label lBlock = new Label();
         lBlock.setText(i_blockSize);
         lBlock.setId(k_IncompleteBlockStyleId);
-        //lBlock.getStyleClass().add("boardBlockLabel");
         i_SliceLabels.add(lBlock);
         i_GridPane.add(lBlock, i_ColumnIndex, i_RowIndex);
         i_GridPane.setMargin(lBlock, new Insets(0,0,0,5));
