@@ -752,45 +752,4 @@ public class MainViewController implements Initializable {
             }
         }, 1000, 1000);//delay, period
     }
-
-//    public void createCellAnimation(Button i_button, Square.eSquareSign i_NextButtonState) {
-//        if(defaultSkinRadioMenuItem.isSelected()){
-//            Rectangle rectangle = new Rectangle(25, 25);
-//            rectangle.setArcHeight(6);
-//            rectangle.setArcWidth(6);
-//            i_button.setGraphic(rectangle);
-//            Color prevColor = getColorValueFromStyleID(i_button);
-//            Color nextColor = getColorValueFromSquareSign(i_NextButtonState);
-//            FillTransition ft = new FillTransition(Duration.millis(750), rectangle, prevColor, nextColor);
-//            ft.setOnFinished(event -> i_button.setGraphic(null));
-//            ft.play();
-//        }
-//    }
-//
-//    private Color getColorValueFromSquareSign(Square.eSquareSign square) {
-//        Color color = new Color(182, 182, 182, 1);
-//
-//        if(square == Square.eSquareSign.BLACKED){
-//            color = Color.BLACK;
-//        }
-//        else if(square == Square.eSquareSign.CLEARED){
-//            color = Color.WHITE;
-//        }
-//
-//        return color;
-//    }
-//
-//    private Color getColorValueFromStyleID(Button i_button){
-//        String state = i_button.getId();
-//        Color color = new Color(182, 182, 182, 1);
-//
-//        if(state.equalsIgnoreCase(k_UndefCellStyleId)){
-//            color = Color.BLACK;
-//        }
-//        else if(state.equalsIgnoreCase(k_ClearedCellStyleId)){
-//            color = Color.WHITE;
-//        }
-//
-//        return color;
-//    }
 }
