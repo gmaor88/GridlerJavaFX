@@ -169,7 +169,7 @@ public class MainViewController implements Initializable{
     @FXML
     private void ShowMovesListMenuItemOnClick(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowMoveList.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/ShowMoveList.fxml"));
             Parent root = fxmlLoader.load();
             ShowMoveListController controller = (ShowMoveListController) fxmlLoader.getController();
             ObservableList<String> items = FXCollections.observableList(m_CurrentPlayer.getMoveList());
@@ -200,19 +200,19 @@ public class MainViewController implements Initializable{
     private void defaultSkinRadioMenuItemOnClick(){
         Scene scene = m_Stage.getScene();
         scene.getStylesheets().clear();
-        scene.getStylesheets().addAll(getClass().getResource("defaultSkin.css").toExternalForm());
+        scene.getStylesheets().addAll(getClass().getResource("CSS/defaultSkin.css").toExternalForm());
     }
     @FXML
     private void sunsetSkinRadioMenuItemOnClick(){
         Scene scene = m_Stage.getScene();
         scene.getStylesheets().clear();
-        scene.getStylesheets().addAll(getClass().getResource("SunsetSkin.css").toExternalForm());
+        scene.getStylesheets().addAll(getClass().getResource("CSS/SunsetSkin.css").toExternalForm());
     }
     @FXML
     private void oceanSkinRadioMenuItemOnClick(){
         Scene scene = m_Stage.getScene();
         scene.getStylesheets().clear();
-        scene.getStylesheets().addAll(getClass().getResource("OceanSkin.css").toExternalForm());
+        scene.getStylesheets().addAll(getClass().getResource("CSS/OceanSkin.css").toExternalForm());
     }
     @FXML
     public void endTurnOnClick() {
@@ -651,7 +651,7 @@ public class MainViewController implements Initializable{
     @FXML
     public void showStatisticsOnClick(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShowStatistics.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/ShowStatistics.fxml"));
             Parent root = fxmlLoader.load();
             ShowStatisticsController controller = (ShowStatisticsController) fxmlLoader.getController();
             controller.getNumberOfMovesPlayedLabel().setText(m_CurrentPlayer.getTotalMovesMadeInGame().toString());
