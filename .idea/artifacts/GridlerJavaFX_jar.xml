@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="GridlerJavaFX:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GridlerJavaFX_jar</output-path>
+    <root id="root">
+      <element id="archive" name="GridlerJavaFX.jar">
+        <element id="module-output" name="GridlerJavaFX" />
+      </element>
+    </root>
+  </artifact>
+</component>
