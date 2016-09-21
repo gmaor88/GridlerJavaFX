@@ -26,7 +26,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import jaxb.GameDescriptor;
-
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class MainViewController implements Initializable{
 
     public void init(Stage i_Stage) {
         m_Stage = i_Stage;
-        m_Stage.setOnCloseRequest((event)->StopTimer());//// TODO: 9/12/2016 maybe set to deamon by separting thread
+        m_Stage.setOnCloseRequest((event)->StopTimer());
     }
 
     private void StopTimer() {
@@ -255,9 +254,6 @@ public class MainViewController implements Initializable{
 
     @FXML
     public void loadGameOnClick() {
-        /*if(m_IsGameLoaded){
-            BoardGridPane.getChildren().clear();
-        }*/
         FileChooser fileChooser = new FileChooser();
         GameLoader gameLoader = new GameLoader();
         fileChooser.setTitle("Open XML File");
@@ -267,7 +263,7 @@ public class MainViewController implements Initializable{
         initPlayerDataLabel();
         File file = fileChooser.showOpenDialog(m_Stage);
         if (file != null) {
-            try {//// TODO: 9/6/2016 use task bar and threds
+            try {// use task bar and threads fo bonuses
                 GameDescriptor gameDescriptor = JaxBGridlerClassGenerator.FromXmlFileToObject(file.getAbsolutePath());
                 m_LoadedBoard = gameLoader.loadBoard(gameDescriptor);
                 m_Players = gameLoader.loadPlayer(gameDescriptor);
@@ -281,8 +277,7 @@ public class MainViewController implements Initializable{
                 enableDisableControlButtons(true);
                 showStatisticsMenuItem.setDisable(true);
                 ShowMovesListMenuItem.setDisable(true);
-                //endTurnButton.setDisable(m_IsGameTypeSinglePlayer);
-            } catch (JAXBException e) {//need to change!
+            } catch (JAXBException e) {
                 showErrorMsg("FIle loading error", "Illegal file");
             } catch (GameLoadException ex) {
                 showErrorMsg("FIle loading error", ex.getErorMsg());
@@ -295,19 +290,13 @@ public class MainViewController implements Initializable{
         initPlayersBoardMenu();
 
         for (GamePlayer player : m_Players){
-            //if(i == 0){
-            //    initPlayer1BoardMenuItem(player);
-            //}
-            //else{
-                final MenuItem playerBoardMenuItem = new MenuItem();
-                playerBoardMenuItem.setText(player.getName());
-                playerBoardMenuItem.setId(player.getId());//Test
-                playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
-                PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
-                m_PlayersBoardsMenuItems.add(i, playerBoardMenuItem);
-                playerBoardMenuItem.setDisable(true);
-           // }
-
+            final MenuItem playerBoardMenuItem = new MenuItem();
+            playerBoardMenuItem.setText(player.getName());
+            playerBoardMenuItem.setId(player.getId());//Test
+            playerBoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(player));
+            PlayersBoardsMenu.getItems().add(playerBoardMenuItem);
+            m_PlayersBoardsMenuItems.add(i, playerBoardMenuItem);
+            playerBoardMenuItem.setDisable(true);
             i++;
         }
 
@@ -318,7 +307,6 @@ public class MainViewController implements Initializable{
     private void initPlayersBoardMenu() {
         m_PlayersBoardsMenuItems.clear();
         PlayersBoardsMenu.getItems().clear();
-        //player1BoardMenuItem.setText("");
     }
 
     private void openForWatchPcPlayersBoard(){
@@ -338,14 +326,6 @@ public class MainViewController implements Initializable{
             playerBoard.setDisable(false);
         }
     }
-
-//    private void initPlayer1BoardMenuItem(GamePlayer i_Player){
-//        player1BoardMenuItem.setText(i_Player.getName());
-//        player1BoardMenuItem.setId(i_Player.getId());//Test
-//        player1BoardMenuItem.setOnAction((event)->playerBoardMenuItemClicked(i_Player));
-//        player1BoardMenuItem.setDisable(true);
-//        m_PlayersBoardsMenuItems.add(player1BoardMenuItem);
-//    }
 
     private void playerBoardMenuItemClicked(GamePlayer i_Player) {
         if(m_IsGameInEndPhase){
@@ -624,7 +604,6 @@ public class MainViewController implements Initializable{
         m_CurrentPlayer.redo();
         showBoard(m_CurrentPlayer);
         redoUndoMenuItemsAvailabilityModifier();
-        //RedoMenuItem.setDisable(!m_CurrentPlayer.isRedoAvailable() && m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         makeMoveButton.setDisable(!m_CurrentPlayer.checkIfPlayerHasMovesLeft());
         movesLeftInTurnLabel.setText(((Integer)(2 - m_CurrentPlayer.getNumOfMovesMade())).toString());
         scoreLabel.setText(((Integer)(int)m_CurrentPlayer.getScore()).toString());
@@ -686,8 +665,7 @@ public class MainViewController implements Initializable{
             return;
         }
 
-       // clearBoard();
-        i_Player.updateBlocks();//// TODO: 9/11/2016 use in progarss thread
+        i_Player.updateBlocks();// use in progress thread if we have time
         for(int i = 0; i < m_LoadedBoard.getBoardHeight(); i++){
             updateBlocks(m_HorizontalBlocksLabel.get(i), i_Player.getHorizontalSlice(i));
             for (int j = 0; j < m_LoadedBoard.getBoardWidth(); j++){
@@ -723,10 +701,9 @@ public class MainViewController implements Initializable{
         }
     }
 
-    private void clearSlice(ArrayList<Label> i_Labels) {// no longer needed!!
+    private void clearSlice(ArrayList<Label> i_Labels) {
         for (Label label: i_Labels){
             label.setId(k_IncompleteBlockStyleId);
-            //label.getStyleClass().clear();
         }
     }
 
