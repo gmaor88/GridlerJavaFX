@@ -3,6 +3,7 @@ package Utils;
 import Logic.GameBoard;
 import Logic.GamePlayer;
 import Logic.Square;
+import javafx.util.Pair;
 import jaxb.GameDescriptor;
 
 import java.util.ArrayList;
@@ -62,10 +63,17 @@ public class GameLoader {
         }
 
         //inserts true value to designated squares
+        ArrayList<Pair<Integer, Integer>> squares = new ArrayList<>();
         for(int i = 0; i < numberOfBlackSquares; i++) {
             rowIndex = i_GameDescriptor.getBoard().getSolution().getSquare().get(i).getRow().intValue();
             columnIndex = i_GameDescriptor.getBoard().getSolution().getSquare().get(i).getColumn().intValue();
+            Pair<Integer, Integer> square = new Pair<>(rowIndex, columnIndex);
+            if(squares.contains(square)){
+                throw new GameLoadException("Solution given holds two or more of the same Square.");
+            }
+
             try {
+                squares.add(square);
                 board.getSquare(rowIndex - 1, columnIndex - 1).setTrueSquareSignValue(Square.eSquareSign.BLACKED); //was without -1
             }
             catch (ArrayIndexOutOfBoundsException e){
